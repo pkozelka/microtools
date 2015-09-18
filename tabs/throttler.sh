@@ -4,7 +4,7 @@
 # http://github.com/pkozelka/microtools/tabs/
 #
 
-TYPES="xml,java"
+TYPES="xml,java,sql"
 
 function countTabs() {
     local file=$1
@@ -14,6 +14,11 @@ function countTabs() {
 function listTabCountsInDir() {
     find * -type f | while read; do
         local file="$REPLY"
+        local ext=${file/#*.}
+        case ",$TYPES," in
+        *,$ext,*);;
+        *) continue;;
+        esac
         cnt=$(countTabs "$file")
         [ "$cnt" == "0" ] && continue
         printf "%8d %s\n" "$cnt" "$file"
@@ -34,7 +39,7 @@ function warning() {
 
 function check() {
     local toleratedFile="$1"
-    listTabCountsInDir | tee $TMP/proposal.txt | while read cnt file; do
+    listTabCountsInDir | tee "$TMP/proposal.txt" | while read cnt file; do
         # do we know this file?
         local expr="${file//\//\\/}"
         expr=${expr//\./\\.}
@@ -56,12 +61,15 @@ function check() {
             fi
         fi
     done
+    printf "%s files contain TABs\n" $(cat "$TMP/proposal.txt" | wc -l)
+
     [ -s "$TMP/errors.txt" ] && return 1
-    if [ -s "$TMP/warnings" ]; then
-        echo "Please reduce your toleration to TABs by replacing your tolerance file with content between markers '---'"
-        echo '---'
+
+    if [ -s "$TMP/warnings.txt" ]; then
+        echo "Please reduce your toleration to TABs by replacing your tolerance file with following content:"
+        echo '-----'
         sort -k1 -n -r "$TMP/proposal.txt"
-        echo '---'
+        echo '-----'
     fi
     true
 }
