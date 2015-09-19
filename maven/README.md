@@ -2,7 +2,7 @@
 
 Files
 
-* [`mwn.sh`](https://github.com/pkozelka/microtools/blob/master/maven/mwn.sh) - [Colorization](#colorization), [Maven Workspaces](#maven-workspaces)
+* [`mwn.sh`](https://github.com/pkozelka/microtools/blob/master/maven/mwn.sh) - [colorization](#colorization), [workspaces](#maven-workspaces)
 * [`.bash_mvn_completion`](https://github.com/pkozelka/microtools/blob/master/maven/.bash_mvn_completion) - bash completion for Maven
 
 ## mwn
@@ -42,7 +42,7 @@ currently helps to emphasize
 * http://blog.blindgaenger.net/colorize_maven_output.html
 * http://johannes.jakeapp.com/blog/category/fun-with-linux/200901/maven-colorized
 * Martin Frýdl
-* Petr Kozelka (colorization of nested executions)
+* Petr Kozelka (nested executions)
 
 ### Maven Workspaces
 
@@ -51,6 +51,10 @@ Allows each project to be built with different environment, which in particular 
 * specify to use different JDK or Maven version
 * work with different `settings.xml`
 * use different **local maven repository**
+
+**Author**
+
+* Petr Kozelka
 
 ## Bash completion for Maven
 
