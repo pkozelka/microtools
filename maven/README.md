@@ -2,10 +2,12 @@
 
 Files
 
-* [`mwn.sh`](#mwn) - [Colorization](#colorization), [Maven Workspaces](#maven-workspaces)
-* [`.bash_mvn_completion`](#bash-completion-for-maven) - bash completion for Maven
+* [`mwn.sh`](https://github.com/pkozelka/microtools/blob/master/maven/mwn.sh) - [Colorization](#colorization), [Maven Workspaces](#maven-workspaces)
+* [`.bash_mvn_completion`](https://github.com/pkozelka/microtools/blob/master/maven/.bash-completion-for-maven) - bash completion for Maven
 
 ## mwn
+
+File: [`mwn.sh`](https://github.com/pkozelka/microtools/blob/master/maven/mwn.sh)
 
 * colorizes the console output of Maven
 * launches Maven with different environment and workspace
@@ -52,7 +54,7 @@ Allows each project to be built with different environment, which in particular 
 
 ## Bash completion for Maven
 
-File: `.bash_mvn_completion`
+File: [`.bash_mvn_completion`](https://github.com/pkozelka/microtools/blob/master/maven/.bash-completion-for-maven)
 
 **Configuration**
 
