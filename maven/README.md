@@ -3,7 +3,7 @@
 Files
 
 * [`mwn.sh`](#mwn) - [Colorization](#colorization), [Maven Workspaces](#maven-workspaces)
-* [`.bash_mvn_completion`] - bash completion for Maven
+* [`.bash_mvn_completion`](#bash-completion-for-maven) - bash completion for Maven
 
 ## mwn
 
