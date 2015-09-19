@@ -1,6 +1,11 @@
 # Maven companions for Linux
 
-## MWN - file `mwn.sh`
+Files
+
+* [`mwn.sh`](#mwn) - [Colorization](#colorization), [Maven Workspaces](#maven-workspaces)
+* [`.bash_mvn_completion`] - bash completion for Maven
+
+## mwn
 
 * colorizes the console output of Maven
 * launches Maven with different environment and workspace
@@ -45,7 +50,9 @@ Allows each project to be built with different environment, which in particular 
 * work with different `settings.xml`
 * use different **local maven repository**
 
-## Bash completion for Maven - file `.bash_mvn_completion`
+## Bash completion for Maven
+
+File: `.bash_mvn_completion`
 
 **Configuration**
 
