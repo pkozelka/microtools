@@ -12,6 +12,10 @@ File: [`mwn.sh`](https://github.com/pkozelka/microtools/blob/master/maven/mwn.sh
 * colorizes the console output of Maven
 * launches Maven with different environment and workspace
 
+Screenshot:
+
+![mwn - workspaces and colors](doc/mwn-example.png)
+
 **Configuration**
 
 ```
