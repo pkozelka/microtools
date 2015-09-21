@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # TAB throttler (C) Petr Kozelka
-# http://github.com/pkozelka/microtools/tabs/
+# https://github.com/pkozelka/microtools/tree/master/tabs
 #
 
 TYPES="xml,java,sql"
@@ -40,11 +40,14 @@ function warning() {
 function check() {
     local toleratedFile="$1"
     listTabCountsInDir | tee "$TMP/proposal.txt" | while read cnt file; do
-        # do we know this file?
+        case "$file" in
+        */target/*) continue;;
+        esac
+        # do we care about this file?
         local expr="${file//\//\\/}"
         expr=${expr//\./\\.}
         local toleratedCount=""
-        [ -s "$toleratedFile" ] && $(sed -n '/ '"$expr"'$/{s#^[[:space:]]*##;s: .*$::;p;}' "$toleratedFile")
+        [ -s "$toleratedFile" ] && toleratedCount=$(sed -n '/ '"$expr"'$/{s#^[[:space:]]*##;s: .*$::;p;}' "$toleratedFile")
 #        echo "cOMPARING: '$toleratedCount' AND '$cnt' EXPR: '$expr'"
         if [ -z "$toleratedCount" ]; then
             error "$file" "Not tolerated, has $cnt TAB characters"
@@ -62,8 +65,9 @@ function check() {
             fi
         fi
     done
+    local totalTabCount=$(cut -c1-9 "$TMP/proposal.txt" | paste -sd+ - | bc)
     if [ -s "$TMP/proposal.txt" ]; then
-        printf "%5d files contain TABs\n" $(cat "$TMP/proposal.txt" | wc -l)
+        printf "%5d files contain %d TABs\n" $(cat "$TMP/proposal.txt" | wc -l) "$totalTabCount"
     fi
 
     if [ -s "$TMP/errors.txt" ]; then
