@@ -88,6 +88,17 @@ function check() {
     true
 }
 
+function updateList() {
+    local toleratedFile="$1"
+
+    local prevFileCnt=$(cat $toleratedFile | wc -l)
+    local prevTabCnt=$(cut -c1-9 "$toleratedFile" | paste -sd+ - | bc)
+    listTabCountsInDir | sort -k1 -n >$toleratedFile || return 1
+    local newFileCnt=$(cat $toleratedFile | wc -l)
+    local newTabCnt=$(cut -c1-9 "$toleratedFile" | paste -sd+ - | bc)
+    printf "updating tolerance [files/tabs] from [%d/%d] to [%d/%d]\n" "$prevFileCnt" "$prevTabCnt" "$newFileCnt" "$newTabCnt"
+}
+
 function printUsage() {
     cat <<EOF
 Usage:
@@ -118,6 +129,9 @@ case "$CMD" in
     ;;
 'check')
     check ${1?'Specify your tab-tolerance file'}
+    ;;
+'update')
+    updateList ${1?'Specify your tab-tolerance file'}
     ;;
 '')
     echo "ERROR: A command expected." >&2
