@@ -61,9 +61,14 @@ function check() {
             fi
         fi
     done
-    printf "%s files contain TABs\n" $(cat "$TMP/proposal.txt" | wc -l)
+    if [ -s "$TMP/proposal.txt" ]; then
+        printf "%5d files contain TABs\n" $(cat "$TMP/proposal.txt" | wc -l)
+    fi
 
-    [ -s "$TMP/errors.txt" ] && return 1
+    if [ -s "$TMP/errors.txt" ]; then
+        printf "%5d files exceed tolerated TAB counts\n" $(cat "$TMP/errors.txt" | wc -l)
+        return 1
+    fi
 
     if [ -s "$TMP/warnings.txt" ]; then
         echo "Please reduce your toleration to TABs by replacing your tolerance file with following content:"
