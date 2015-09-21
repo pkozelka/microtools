@@ -18,7 +18,7 @@ Screenshot:
 
 **Configuration**
 
-```
+```sh
 cd $HOME/bin # we assume that ~/bin is on PATH
 ln -s $HOME/github.com/microtools/maven/mwn.sh mwn
 # alternative:
@@ -66,7 +66,7 @@ File: [`.bash_mvn_completion`](https://github.com/pkozelka/microtools/blob/maste
 
 **Configuration**
 
-```
+```sh
 echo 'source $HOME/github.com/microtools/maven/.bash_mvn_completion' >>$HOME/.bashrc
 ```
 
