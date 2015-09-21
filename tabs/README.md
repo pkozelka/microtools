@@ -38,6 +38,8 @@ esac
 
 Therefore, builds prepared in any branch that can merge to your, say, `develop` branch will be checked against tolerated TAB counts specified in the `tab-tolerance.txt` file.
 
+**On commandline**
+
 As a user elevated enough to push directly to your `develop` branch, you shoud prepare and commit the `tab-tolerance.txt` file:
 ```sh
 $HOME/github.com/microtools/tabs/throttler.sh list | grep -v '/target/' >tab-tolerance.txt
@@ -50,4 +52,30 @@ During time, the number of TABs will become smaller and smaller; it's useful to 
 ```sh
 git add tab-tolerance.txt
 git commit -m 'updated tab-tolerance from the current state' tab-tolerance.txt
+```
+
+
+### Makefile fragment
+
+To make things convenient, following can be added to your project `Makefile`:
+
+```Makefile
+## TABS THROTLER
+tt-download-newer-throttler:
+	mkdir -p bin
+	cp -a "$(HOME)/github.com/microtools/tabs/throttler.sh" "bin/tabs-throttler.sh" ||\
+	wget -O "bin/tabs-throttler.sh" "https://raw.githubusercontent.com/pkozelka/microtools/master/tabs/throttler.sh"
+	chmod +x "bin/tabs-throttler.sh"
+	git add "bin/tabs-throttler.sh"
+	git commit -m 'tabs-throttler upgraded' "bin/tabs-throttler.sh"
+
+tt-update:
+	git checkout tab-tolerance.txt
+	bin/tabs-throttler.sh update tab-tolerance.txt >.git/tt-message
+	git add tab-tolerance.txt
+	git commit -F .git/tt-message tab-tolerance.txt
+
+tt-check:
+	# run this from CI
+	bin/tabs-throttler.sh check tab-tolerance.txt
 ```
