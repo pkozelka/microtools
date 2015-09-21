@@ -43,10 +43,11 @@ function check() {
         # do we know this file?
         local expr="${file//\//\\/}"
         expr=${expr//\./\\.}
-        local toleratedCount=$(sed -n '/ '"$expr"'$/{s#^[[:space:]]*##;s: .*$::;p;}' "$toleratedFile")
+        local toleratedCount=""
+        [ -s "$toleratedFile" ] && $(sed -n '/ '"$expr"'$/{s#^[[:space:]]*##;s: .*$::;p;}' "$toleratedFile")
 #        echo "cOMPARING: '$toleratedCount' AND '$cnt' EXPR: '$expr'"
         if [ -z "$toleratedCount" ]; then
-            error "$file" "Introduces $cnt TAB characters"
+            error "$file" "Not tolerated, has $cnt TAB characters"
         else
             toleratedCount=$(( toleratedCount ))
             cnt=$(( cnt ))
@@ -66,7 +67,11 @@ function check() {
     fi
 
     if [ -s "$TMP/errors.txt" ]; then
-        printf "%5d files exceed tolerated TAB counts\n" $(cat "$TMP/errors.txt" | wc -l)
+        if [ -f "$toleratedFile" ]; then
+            printf "%5d files exceed tolerated TAB counts\n" $(cat "$TMP/errors.txt" | wc -l)
+        else
+            echo "WARNING: $toleratedFile does not exist, we do not tolerate any tabs"
+        fi
         return 1
     fi
 
