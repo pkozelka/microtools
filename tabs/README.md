@@ -17,3 +17,37 @@ So the resolution is:
 - do not allow new `TAB` character to appear in the source code
 - ideally, make sure people fix indentation on lines that they modify for other purposes
 - make a list of files that contains `TAB`s.
+
+### Usage
+
+On your **CI server**, add something like this script at the start of your *all branch build* job:
+
+```sh
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+case "$CURRENT_BRANCH" in
+master|maintenance-*)
+    echo "skipping TAB check in maintenance branch '$CURRENT_BRANCH'"
+#develop);;
+    # TODO maybe ... update tab-tolerance.txt automatically?
+    # $HOME/github.com/microtools/tabs/throttler.sh list | grep -v '/target/' >tab-tolerance.txt
+*)
+    # check if TAB counts are within per-file limits
+    $HOME/github.com/microtools/tabs/throttler.sh check tab-tolerance.txt
+esac
+```
+
+Therefore, builds prepared in any branch that can merge to your, say, `develop` branch will be checked against tolerated TAB counts specified in the `tab-tolerance.txt` file.
+
+As a user elevated enough to push directly to your `develop` branch, you shoud prepare and commit the `tab-tolerance.txt` file:
+```sh
+$HOME/github.com/microtools/tabs/throttler.sh list | grep -v '/target/' >tab-tolerance.txt
+git add tab-tolerance.txt
+git commit -m 'defined tab-tolerance from the current state' tab-tolerance.txt
+```
+
+During time, the number of TABs will become smaller and smaller; it's useful to occassionally reduce the tolerance to ensure that TABs won't return again.
+
+```sh
+git add tab-tolerance.txt
+git commit -m 'updated tab-tolerance from the current state' tab-tolerance.txt
+```
