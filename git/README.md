@@ -3,6 +3,8 @@
 
 ## Fix email address of committer and author
 
+Inspired by http://serverfault.com/questions/12373/how-do-i-edit-gits-history-to-correct-an-incorrect-email-address-name
+
 Synopsis:
 
 ```
