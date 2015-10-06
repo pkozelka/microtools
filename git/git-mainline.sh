@@ -8,9 +8,9 @@
 function filterMainLine() {
     local hash parentHash
     read hash parentHash
-    while true
+    while [ -n "$hash" ]
     do
-        echo "x:$hash"
+        echo "$hash"
         local firstParent="$parentHash"
         # skip until we find hash==firstParent
         while [ "$hash" != "$firstParent" ]
