@@ -3,7 +3,6 @@
 # Follow main line of the commits between two revs
 # The purpose is to gather docs, consisting of both merge requests AND direct commits
 #
-# TODO ::: not working yet
 
 function filterMainLine() {
     local hash parentHash
