@@ -7,15 +7,19 @@
 
 function filterMainLine() {
     local hash parentHash
-    read hash parentHash
+    read hash parentHash other || return 1
     while [ -n "$hash" ]
     do
         echo "$hash"
         local firstParent="$parentHash"
         # skip until we find hash==firstParent
+        read hash parentHash other || return 1
+        local skipCnt=0
         while [ "$hash" != "$firstParent" ]
         do
-            read hash parentHash || break
+            skipCnt=$(( skipCnt + 1 ))
+#            printf "... skipping %3d: %s (not %s)\n" "$skipCnt" "$hash" "$firstParent"
+            read hash parentHash other || return 1
         done
     done
 }
