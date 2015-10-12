@@ -23,4 +23,24 @@ function filterMainLine() {
     done
 }
 
+function rawToJson() {
+    while read key value; do
+        case "key" in
+        'commit') echo '    "commit": "'$key'",';;
+        'tree') echo '    "tree": "'$key'",';;
+        'parent') echo '    "parent": "'$key'",';;
+        'author') echo '    "author": "'$key'",';;
+        'committer') echo '    "committer": "'$key'",';;
+        *) break;;
+        esac
+    done
+}
+
+function toJson() {
+    local hash=$1
+    git show --pretty=raw | rawToJson
+}
+
 git rev-list --parents HEAD | filterMainLine
+
+
