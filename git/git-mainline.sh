@@ -25,22 +25,38 @@ function filterMainLine() {
 
 function rawToJson() {
     while read key value; do
-        case "key" in
-        'commit') echo '    "commit": "'$key'",';;
-        'tree') echo '    "tree": "'$key'",';;
-        'parent') echo '    "parent": "'$key'",';;
-        'author') echo '    "author": "'$key'",';;
-        'committer') echo '    "committer": "'$key'",';;
+        case "$key" in
+        'commit'|'tree')
+            echo '    "'"$key"'": "'$value'",'
+            ;;
+        'author'|'committer')
+            #convert datetime to iso: date -d 'TZ="+0200" @1444490433' --iso-8601=sec
+            echo '    "'"$key"'": "'$value'",'
+            ;;
+        'parent')
+            #TODO other parents will be rendered as array "merged"
+            echo '    "parent": "'$value'",'
+            ;;
         *) break;;
         esac
+#TODO now parse message as array of lines
     done
 }
 
 function toJson() {
     local hash=$1
-    git show --pretty=raw | rawToJson
+    echo "  hash: $hash; object: {"
+    git show -s --pretty=raw "$hash" | rawToJson
+    echo "  },"
 }
 
-git rev-list --parents HEAD | filterMainLine
+function xxargs() {
+    while read
+    do
+        "$@" "$REPLY"
+    done
+}
+
+git rev-list --parents HEAD | head | filterMainLine | xxargs toJson
 
 
