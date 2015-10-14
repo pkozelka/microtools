@@ -27,15 +27,15 @@ function rawToJson() {
     while read key value; do
         case "$key" in
         'commit'|'tree')
-            echo '    "'"$key"'": "'$value'",'
+            echo '  "'"$key"'": "'$value'",'
             ;;
         'author'|'committer')
             #convert datetime to iso: date -d 'TZ="+0200" @1444490433' --iso-8601=sec
-            echo '    "'"$key"'": "'$value'",'
+            echo '  "'"$key"'": "'$value'",'
             ;;
         'parent')
             #TODO other parents will be rendered as array "merged"
-            echo '    "parent": "'$value'",'
+            echo '  "parent": "'$value'",'
             ;;
         *) break;;
         esac
@@ -45,9 +45,9 @@ function rawToJson() {
 
 function toJson() {
     local hash=$1
-    echo "  hash: $hash; object: {"
+    echo "{"
     git show -s --pretty=raw "$hash" | rawToJson
-    echo "  },"
+    echo "},"
 }
 
 function xxargs() {
