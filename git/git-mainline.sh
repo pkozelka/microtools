@@ -24,6 +24,8 @@ function filterMainLine() {
 }
 
 function rawToJson() {
+    local parent=""
+    local merges=""
     while read key value; do
         case "$key" in
         'commit'|'tree')
@@ -34,13 +36,44 @@ function rawToJson() {
             echo '  "'"$key"'": "'$value'",'
             ;;
         'parent')
-            #TODO other parents will be rendered as array "merged"
-            echo '  "parent": "'$value'",'
+            if [ -z "$parent" ]; then
+                #TODO other parents will be rendered as array "merged"
+                parent="$value"
+            else
+                merges="$value "
+            fi
             ;;
-        *) break;;
+        '') break;;
         esac
-#TODO now parse message as array of lines
     done
+# end of key/value pairs; now comes message, but first render parents
+    [ -n "$parent" ] && printf '  "parent": "%s"\n' "$parent"
+    if [ -n "$merges" ]; then
+        local m
+        local first="true"
+        printf '  "merges": ['
+        for m in $merges; do
+            "$first" || printf ","
+            first="false"
+            printf '"%s"' "$m"
+        done
+        printf ']\n'
+    fi
+    # parse message - each line is prefixed with 4 spaces
+    printf '  "message": [\n'
+    local first="true"
+    while read; do
+        case "$REPLY" in
+        '    '*)
+            local line=${REPLY:4}
+            "$first" || printf ",\n"
+            first="false"
+            printf '    "%s"' "$line"
+            ;;
+        '') break;;
+        esac
+    done
+    printf ']\n'
 }
 
 function toJson() {
