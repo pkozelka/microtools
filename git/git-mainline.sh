@@ -29,11 +29,11 @@ function rawToJson() {
     while read key value; do
         case "$key" in
         'commit'|'tree')
-            echo '  "'"$key"'": "'$value'",'
+            printf '  "%s": "%s",\n' "$key" "$value"
             ;;
         'author'|'committer')
             #convert datetime to iso: date -d 'TZ="+0200" @1444490433' --iso-8601=sec
-            echo '  "'"$key"'": "'$value'",'
+            printf '  "%s": "%s",\n' "$key" "$value"
             ;;
         'parent')
             if [ -z "$parent" ]; then
@@ -78,9 +78,9 @@ function rawToJson() {
 
 function toJson() {
     local hash=$1
-    echo "{"
+    printf "{\n"
     git show -s --pretty=raw "$hash" | rawToJson
-    echo "},"
+    printf "},"
 }
 
 function xxargs() {
@@ -90,6 +90,8 @@ function xxargs() {
     done
 }
 
+printf "["
 git rev-list --parents HEAD | head | filterMainLine | xxargs toJson
+printf "null]"
 
 
