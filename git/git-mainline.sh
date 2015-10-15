@@ -47,7 +47,7 @@ function rawToJson() {
         esac
     done
 # end of key/value pairs; now comes message, but first render parents
-    [ -n "$parent" ] && printf '  "parent": "%s"\n' "$parent"
+    [ -n "$parent" ] && printf '  "parent": "%s",\n' "$parent"
     if [ -n "$merges" ]; then
         local m
         local first="true"
@@ -57,7 +57,7 @@ function rawToJson() {
             first="false"
             printf '"%s"' "$m"
         done
-        printf ']\n'
+        printf '],\n'
     fi
     # parse message - each line is prefixed with 4 spaces
     printf '  "message": [\n'
@@ -66,6 +66,7 @@ function rawToJson() {
         case "$REPLY" in
         '    '*)
             local line=${REPLY:4}
+            line=${line//\"/\\\"}
             "$first" || printf ",\n"
             first="false"
             printf '    "%s"' "$line"
@@ -91,7 +92,6 @@ function xxargs() {
 }
 
 printf "{"commits":["
-git rev-list --parents HEAD | head | filterMainLine | xxargs toJson
+git rev-list --parents HEAD | head -100 | filterMainLine | xxargs toJson
+# we must soon find a better way than null
 printf "null]}"
-
-
