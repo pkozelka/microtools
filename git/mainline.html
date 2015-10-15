@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Changes</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="http://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="http://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-resource.js"></script>
+    <!--<script src="index.js"></script>-->
+      <script>
+          var app = angular.module('app', ['ngResource']);
+          app.controller("MyController", function ($scope, $resource) {
+              $resource('commits.json').get(function (data) {
+                  $scope.data = data;
+                  document.title = "Changes in " + data.repository;
+              });
+          });
+      </script>
+    <style>
+.centered-heading {
+  padding: 40px 15px;
+  text-align: center;
+}
+    </style>
+  </head>
+  <body ng-controller="MyController">
+    <div class="container">
+
+      <div class="centered-heading">
+        <h1>Change log</h1>
+        <p class="lead">{{data.repository}}</p>
+      </div>
+
+        <a name="endpoints"></a>
+        <h2>Changes</h2>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <ul>
+                    <li ng-repeat="c in data.commits">
+                        <a href="{{c.commit}}">{{c.message[0]}}</a> <i>({{c.author}})</i><span ng-if="c.message.length>1">...</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div><!-- /.container -->
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  </body>
+</html>
+
