@@ -106,9 +106,11 @@ function xxargs() {
 }
 
 function printAllRevisions() {
+    local range="$@"
+    [ -z "$range" ] && range="HEAD ^HEAD~100"
     local repositoryUrl=$(git config "remote.origin.url")
     printf '{ "repository": "%s", "commits":[' "$repositoryUrl"
-    git rev-list --parents HEAD | head -100 | filterMainLine | xxargs toJson
+    git rev-list --parents $range | filterMainLine | xxargs toJson
     # we must soon find a better way than null
     printf "REMOVE_TRAILING_COMMA]}"
 }
