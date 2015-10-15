@@ -49,32 +49,26 @@ function rawToJson() {
 # end of key/value pairs; now comes message, but first render parents
     [ -n "$parent" ] && printf '  "parent": "%s",\n' "$parent"
     if [ -n "$merges" ]; then
-        local m
-        local first="true"
         printf '  "merges": ['
+        local m
         for m in $merges; do
-            "$first" || printf ","
-            first="false"
-            printf '"%s"' "$m"
+            printf '"%s",' "$m"
         done
-        printf '],\n'
+        printf 'REMOVE_TRAILING_COMMA],\n'
     fi
     # parse message - each line is prefixed with 4 spaces
-    printf '  "message": [\n'
-    local first="true"
+    printf '  "message": ['
     while read; do
         case "$REPLY" in
         '    '*)
             local line=${REPLY:4}
             line=${line//\"/\\\"}
-            "$first" || printf ",\n"
-            first="false"
-            printf '    "%s"' "$line"
+            printf '\n    "%s",' "$line"
             ;;
         '') break;;
         esac
     done
-    printf ']\n'
+    printf 'REMOVE_TRAILING_COMMA]\n'
 }
 
 function toJson() {
@@ -91,7 +85,15 @@ function xxargs() {
     done
 }
 
-printf "{"commits":["
-git rev-list --parents HEAD | head -100 | filterMainLine | xxargs toJson
-# we must soon find a better way than null
-printf "null]}"
+function printAllRevisions() {
+    printf '{"commits":['
+    git rev-list --parents HEAD | head -100 | filterMainLine | xxargs toJson
+    # we must soon find a better way than null
+    printf "REMOVE_TRAILING_COMMA]}"
+}
+
+function removeTrailingCommas() {
+    sed 's:,\?REMOVE_TRAILING_COMMA::g'
+}
+
+printAllRevisions "$@" | removeTrailingCommas
