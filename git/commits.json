@@ -1,8 +1,8 @@
 { "repository": "git@github.com:liquibase/liquibase.git", "commits":[{
   "commit": "e388acc0725dba04537d7956cb0b35656365c90b",
   "tree": "7ab234b837ec9b077d3450f72d20122017c0a22a",
-  "author": "Nathan Voxland <nathan@voxland.net> 1444843601 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1444843601 -0500",
+  "author": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-10-14T19:26:41+0200"},
+  "committer": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-10-14T19:26:41+0200"},
   "parent": "ccae26f42e79d69c593fdf7315081837fbb8f2f6",
   "merges": ["12b35f72df5cf66854ac1f5b172867ea9ecb5e43"],
   "message": [
@@ -10,16 +10,16 @@
 },{
   "commit": "ccae26f42e79d69c593fdf7315081837fbb8f2f6",
   "tree": "38365363f903d08e315b73d80adadd21be9eb5dd",
-  "author": "Nathan Voxland <nathan@voxland.net> 1444843582 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1444843582 -0500",
+  "author": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-10-14T19:26:22+0200"},
+  "committer": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-10-14T19:26:22+0200"},
   "parent": "f1749b99efa0cce2b59f297b6faab98337a71e33",
   "message": [
     "Note on  https://github.com/liquibase/liquibase/pull/359/files says current_schema() works for postgres and redshift"]
 },{
   "commit": "f1749b99efa0cce2b59f297b6faab98337a71e33",
   "tree": "6001aeac73fefbfc0db031efa08c2f8369bd25fc",
-  "author": "Nathan Voxland <nathan@voxland.net> 1444341674 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1444341674 -0500",
+  "author": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-10-09T00:01:14+0200"},
+  "committer": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-10-09T00:01:14+0200"},
   "parent": "cc01fa61e5a59d58bab96ce89e97496f9f7fa9dd",
   "merges": ["403ec238f2992ebdbab4f25b1cfcf530e44b5420"],
   "message": [
@@ -27,8 +27,8 @@
 },{
   "commit": "cc01fa61e5a59d58bab96ce89e97496f9f7fa9dd",
   "tree": "3f6f99a7f0800ad1635763c731ff03489ace2077",
-  "author": "Nathan Voxland <nathan@voxland.net> 1444337284 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1444337284 -0500",
+  "author": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-10-08T22:48:04+0200"},
+  "committer": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-10-08T22:48:04+0200"},
   "parent": "af2acbf2e210b55f5a68bf29288f39b17e0b6070",
   "merges": ["585fb7c8d6f415fac887ed60ddc4669247dbda6b"],
   "message": [
@@ -36,8 +36,8 @@
 },{
   "commit": "af2acbf2e210b55f5a68bf29288f39b17e0b6070",
   "tree": "3d16e7461d0bdd5784e9695c36b9ca403eec2d99",
-  "author": "Nathan Voxland <nathan@voxland.net> 1444320901 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1444320901 -0500",
+  "author": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-10-08T18:15:01+0200"},
+  "committer": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-10-08T18:15:01+0200"},
   "parent": "d5a6da4ec2aa1c30fac7f8fa7a430434762fa69b",
   "merges": ["ba64bd07dcad47ffe6c2e876bfbc9fd462c8460b"],
   "message": [
@@ -45,8 +45,8 @@
 },{
   "commit": "d5a6da4ec2aa1c30fac7f8fa7a430434762fa69b",
   "tree": "8b55a57baea43d8aaf56ee4e56102d914b9bf65d",
-  "author": "Nathan Voxland <nathan@voxland.net> 1444320701 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1444320701 -0500",
+  "author": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-10-08T18:11:41+0200"},
+  "committer": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-10-08T18:11:41+0200"},
   "parent": "8316f22d2a2625ac3b48b9ad1ecb108ea076bc55",
   "merges": ["47713d8bdcd7ca66d9c5be783625dfdfbddd7adf"],
   "message": [
@@ -54,8 +54,8 @@
 },{
   "commit": "8316f22d2a2625ac3b48b9ad1ecb108ea076bc55",
   "tree": "f97e04521d0b30ba1fa7398f62802d52e1d378ea",
-  "author": "Nathan Voxland <nathan@voxland.net> 1443729750 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1443729750 -0500",
+  "author": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-10-01T22:02:30+0200"},
+  "committer": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-10-01T22:02:30+0200"},
   "parent": "b34e5fef0e440b7ae0a9c6c514c966d477a7bb2b",
   "merges": ["1a3693229ec4f419752c91bc5d655fe7d613c010"],
   "message": [
@@ -65,8 +65,8 @@
 },{
   "commit": "b34e5fef0e440b7ae0a9c6c514c966d477a7bb2b",
   "tree": "ab0cdf2e5d004cc65516218df7a470b8af1165a4",
-  "author": "Nathan Voxland <nathan@voxland.net> 1443716250 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1443716250 -0500",
+  "author": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-10-01T18:17:30+0200"},
+  "committer": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-10-01T18:17:30+0200"},
   "parent": "ced7e63948c0e851c22869b5e1d2d7fd7efc1c3d",
   "merges": ["5cdae610a110339901ff7cb9e61c231230947178"],
   "message": [
@@ -76,8 +76,8 @@
 },{
   "commit": "ced7e63948c0e851c22869b5e1d2d7fd7efc1c3d",
   "tree": "5e1d169fcea08a9d8da9e47e85c091d5a866384c",
-  "author": "Nathan Voxland <nathan@voxland.net> 1443716140 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1443716140 -0500",
+  "author": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-10-01T18:15:40+0200"},
+  "committer": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-10-01T18:15:40+0200"},
   "parent": "a71b06a992415fc0c4a012af81bf20078def7d69",
   "merges": ["2d099561a99ac8cbd2253772b365848fc42b8556"],
   "message": [
@@ -87,8 +87,8 @@
 },{
   "commit": "a71b06a992415fc0c4a012af81bf20078def7d69",
   "tree": "e8d0b10154529065720c2dcfb0bda7987ae2846b",
-  "author": "Nathan Voxland <nathan@voxland.net> 1441922264 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1441922264 -0500",
+  "author": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-09-10T23:57:44+0200"},
+  "committer": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-09-10T23:57:44+0200"},
   "parent": "e36f8e4cbf1edf92bb22c40a82a86cb06288ee29",
   "merges": ["76a825f0ae5b224015c74a28a8c6ce7589a109c2"],
   "message": [
@@ -98,8 +98,8 @@
 },{
   "commit": "e36f8e4cbf1edf92bb22c40a82a86cb06288ee29",
   "tree": "8bb7e002aa2fc5e1df4e6f459d2f22480f2be074",
-  "author": "Nathan Voxland <nathan@voxland.net> 1441920533 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1441920533 -0500",
+  "author": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-09-10T23:28:53+0200"},
+  "committer": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-09-10T23:28:53+0200"},
   "parent": "e71d27165deb908d7759e77cc07fa2e80b1e682d",
   "merges": ["cc0100b22615178c57d8ac7092124c5ad2f3a587"],
   "message": [
@@ -109,8 +109,8 @@
 },{
   "commit": "e71d27165deb908d7759e77cc07fa2e80b1e682d",
   "tree": "0d27a528c65f0499d0a27afdca9c0afd532e4f8b",
-  "author": "Nathan Voxland <nathan@voxland.net> 1441918012 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1441918012 -0500",
+  "author": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-09-10T22:46:52+0200"},
+  "committer": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-09-10T22:46:52+0200"},
   "parent": "dc41bef7dbcd4719f834d6a80853b300325efb8a",
   "merges": ["c7aa061c1010a14b016fbbf233704fc1a3675ffb"],
   "message": [
@@ -118,8 +118,8 @@
 },{
   "commit": "dc41bef7dbcd4719f834d6a80853b300325efb8a",
   "tree": "0d27a528c65f0499d0a27afdca9c0afd532e4f8b",
-  "author": "Nathan Voxland <nathan@voxland.net> 1441918006 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1441918006 -0500",
+  "author": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-09-10T22:46:46+0200"},
+  "committer": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-09-10T22:46:46+0200"},
   "parent": "9c04759c5f6295e9928bdf9686a34f6a9626e7e9",
   "merges": ["b0533d7ac07a6afbce6ddfddbc63d282f656c414"],
   "message": [
@@ -127,8 +127,8 @@
 },{
   "commit": "9c04759c5f6295e9928bdf9686a34f6a9626e7e9",
   "tree": "a7677852810107653609564d218c1955ae988053",
-  "author": "Nathan Voxland <nathan@voxland.net> 1440443809 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1440443809 -0500",
+  "author": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-08-24T21:16:49+0200"},
+  "committer": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-08-24T21:16:49+0200"},
   "parent": "4e509a2e5808b67a660b87d546297ce846a88417",
   "merges": ["7363f8e6e7ebe975fb5354b3cb25c01e54f5d66f"],
   "message": [
@@ -136,8 +136,8 @@
 },{
   "commit": "4e509a2e5808b67a660b87d546297ce846a88417",
   "tree": "3c843772279fc72778589dab41ba9bf9de3526fb",
-  "author": "Nathan Voxland <nathan@voxland.net> 1440443747 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1440443747 -0500",
+  "author": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-08-24T21:15:47+0200"},
+  "committer": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-08-24T21:15:47+0200"},
   "parent": "cc72fd57b2367f716b049ccf35dbd1db42c953df",
   "merges": ["20fb39de2d21ec657e3864af51475d02c5fa8705"],
   "message": [
@@ -145,8 +145,8 @@
 },{
   "commit": "cc72fd57b2367f716b049ccf35dbd1db42c953df",
   "tree": "21259b4ce8f5db7817afd3f1d0dd3b008997c78b",
-  "author": "Nathan Voxland <nathan@voxland.net> 1440193931 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1440193931 -0500",
+  "author": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-08-21T23:52:11+0200"},
+  "committer": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-08-21T23:52:11+0200"},
   "parent": "92cc07b752fb38056b00f1620f581ada0e2aa02f",
   "message": [
     "CORE-2499 Support for commenting lines in csv files",
@@ -155,8 +155,8 @@
 },{
   "commit": "92cc07b752fb38056b00f1620f581ada0e2aa02f",
   "tree": "7c33e27e806c2d114504130a6ef656378a7cf316",
-  "author": "Nathan Voxland <nathan@voxland.net> 1440193741 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1440193741 -0500",
+  "author": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-08-21T23:49:01+0200"},
+  "committer": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-08-21T23:49:01+0200"},
   "parent": "17e0a05b98c7fac80725bb2ca78c0e9f4a306a9a",
   "message": [
     "CORE-2499 Support for commenting lines in csv files",
@@ -165,8 +165,8 @@
 },{
   "commit": "17e0a05b98c7fac80725bb2ca78c0e9f4a306a9a",
   "tree": "293027dcb4940b934a1e00d04e68ad92fa79bf70",
-  "author": "Nathan Voxland <nathan@voxland.net> 1440193404 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1440193404 -0500",
+  "author": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-08-21T23:43:24+0200"},
+  "committer": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-08-21T23:43:24+0200"},
   "parent": "b082da8609c7da116ad42500b51554a7f0e7449e",
   "merges": ["f31002f29c5879f87a0fc6b2ac788feb5b689d12"],
   "message": [
@@ -174,8 +174,8 @@
 },{
   "commit": "b082da8609c7da116ad42500b51554a7f0e7449e",
   "tree": "e36190bc87b8d41edd95c72eeb98efabeef08ce4",
-  "author": "Nathan Voxland <nathan@voxland.net> 1440190236 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1440190236 -0500",
+  "author": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-08-21T22:50:36+0200"},
+  "committer": {"email": "nathan@voxland.net", "name": "Nathan Voxland", "time": "2015-08-21T22:50:36+0200"},
   "parent": "033b0979c3922f613749d3d560f6879d28853917",
   "merges": ["22a781f752dc41a9390c03ffe138874b8364c45c"],
   "message": [
@@ -184,487 +184,4 @@
     "Conflicts:",
     "\tliquibase-core/pom.xml",
     "\tliquibase-core/src/main/java/liquibase/change/core/ExecuteShellCommandChange.java"]
-},{
-  "commit": "033b0979c3922f613749d3d560f6879d28853917",
-  "tree": "dc86337fce7666b05d81006d05fd77a371d2ed22",
-  "author": "Nathan Voxland <nathan@voxland.net> 1438203891 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1438203891 -0500",
-  "parent": "182e60784d8c324c42087bb9e236de3f7134414a",
-  "merges": ["4e2e7631040d61fb6606e9e2fe56b0001f84da52"],
-  "message": [
-    "Merge branch 'ddb'"]
-},{
-  "commit": "182e60784d8c324c42087bb9e236de3f7134414a",
-  "tree": "ae159ef51725e697d40d0ad5665682a040d3ea13",
-  "author": "Nathan Voxland <nathan@voxland.net> 1438116142 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1438116142 -0500",
-  "parent": "28136646da59fe5a6bded48531a2b871dfa01c9e",
-  "merges": ["fd242bdb32d6946c99f1f9578d7883b281cd4336"],
-  "message": [
-    "Merge branch '3.4.x'",
-    "",
-    "Conflicts:",
-    "\tliquibase-cdi/pom.xml",
-    "\tliquibase-core/pom.xml",
-    "\tliquibase-core/src/main/java/liquibase/datatype/core/UnknownType.java",
-    "\tliquibase-debian/pom.xml",
-    "\tliquibase-integration-tests/pom.xml",
-    "\tliquibase-maven-plugin/pom.xml",
-    "\tliquibase-osgi/pom.xml",
-    "\tliquibase-rpm/pom.xml",
-    "\tpom.xml"]
-},{
-  "commit": "28136646da59fe5a6bded48531a2b871dfa01c9e",
-  "tree": "83b1d88c7721daeed13ecf21d1ae4312c36d7825",
-  "author": "Nathan Voxland <nathan@voxland.net> 1438011569 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1438011569 -0500",
-  "parent": "5d598f538b3cec8e1776e072df81d0e59e0bca56",
-  "merges": ["d36838ab4b2cb947587a145475cbbb0fd4903315"],
-  "message": [
-    "Merge branch 'ddb'"]
-},{
-  "commit": "5d598f538b3cec8e1776e072df81d0e59e0bca56",
-  "tree": "a1b3be1be81c14c2328a0dac13089fa2297f36a3",
-  "author": "Nathan Voxland <nathan@voxland.net> 1437772285 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1437772285 -0500",
-  "parent": "c02306b3e20a007306b33a3824e0c193d45ae296",
-  "merges": ["0fc73d796fbc3f51cae69a8f9e517261ac968c51"],
-  "message": [
-    "Merge branch 'ddb'"]
-},{
-  "commit": "c02306b3e20a007306b33a3824e0c193d45ae296",
-  "tree": "c7d981a84d6586e14068e25fcb9576edbef69671",
-  "author": "Nathan Voxland <nathan@voxland.net> 1437684918 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1437684918 -0500",
-  "parent": "ecf131442659e0bcb645def09f4c5f0b8232be47",
-  "merges": ["3524c616592332ea0d9658b7e37b67d4cfcc3032"],
-  "message": [
-    "Merge remote-tracking branch 'origin/master'"]
-},{
-  "commit": "ecf131442659e0bcb645def09f4c5f0b8232be47",
-  "tree": "5076ec53b9bf56addc9af75a6c20d30e955a4630",
-  "author": "Nathan Voxland <nathan@voxland.net> 1437684905 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1437684905 -0500",
-  "parent": "98919a04cf7518f9de92fcdfd5e4920e477dab9a",
-  "merges": ["d78aa9f66ec3d4a8bffdbcf86f2bd1cd2ad8c96d"],
-  "message": [
-    "Merge branch 'ddb'"]
-},{
-  "commit": "98919a04cf7518f9de92fcdfd5e4920e477dab9a",
-  "tree": "e96a9648facbb99111a5c710352fd652f8648eac",
-  "author": "Nathan Voxland <nathan@voxland.net> 1437671948 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1437671948 -0500",
-  "parent": "1305ce12106ce01e7a7f4455add9047cc03aca26",
-  "merges": ["3f677e1405782a5a098becc150071bb96e4a4709"],
-  "message": [
-    "Merge branch 'ddb'",
-    "",
-    "Conflicts:",
-    "\tliquibase-core/src/main/java/liquibase/changelog/ChangeSet.java"]
-},{
-  "commit": "1305ce12106ce01e7a7f4455add9047cc03aca26",
-  "tree": "9c689a402052c322baffc649b9dc2f4888764b3b",
-  "author": "Nathan Voxland <nathan@voxland.net> 1436556540 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1436556540 -0500",
-  "parent": "54329294d10baf75ca17e377230403a0b37674ba",
-  "merges": ["b28c89a1707ba9a1d5cf5f21f53146db656beb10"],
-  "message": [
-    "Merge branch 'ddb'"]
-},{
-  "commit": "54329294d10baf75ca17e377230403a0b37674ba",
-  "tree": "dc35f27cd1edb32e296493526a13f6884f3f61b6",
-  "author": "Nathan Voxland <nathan@voxland.net> 1436472778 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1436472778 -0500",
-  "parent": "9f56b8680a8cc9527eb56e16c5e3e15374ef8e15",
-  "merges": ["c9ab76fe7be18a073f7bd0f9f066ddc2e8cc0e9c"],
-  "message": [
-    "Merge branch 'ddb'"]
-},{
-  "commit": "9f56b8680a8cc9527eb56e16c5e3e15374ef8e15",
-  "tree": "a28f8c3d3d5220c7964fb5094dd177dc5aa6c384",
-  "author": "Nathan Voxland <nathan@voxland.net> 1436213498 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1436213498 -0500",
-  "parent": "1b1f2fb32d321594e2a9517b52f7cfd2d6772256",
-  "merges": ["ed6d2591831ed05eb09ed9d597c09d4b4a0b133c"],
-  "message": [
-    "Merge branch 'ddb'",
-    "",
-    "Conflicts:",
-    "\tliquibase-core/pom.xml",
-    "\tliquibase-core/src/main/java/liquibase/datatype/core/BlobType.java",
-    "\tliquibase-core/src/main/java/liquibase/datatype/core/UnknownType.java",
-    "\tliquibase-core/src/main/java/liquibase/sqlgenerator/core/CreateTableGenerator.java",
-    "\tliquibase-core/src/main/java/liquibase/util/StringUtils.java"]
-},{
-  "commit": "1b1f2fb32d321594e2a9517b52f7cfd2d6772256",
-  "tree": "6d2f971168a29f750a6c1860997ae371cac9f736",
-  "author": "Nathan Voxland <nathan@voxland.net> 1435699650 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1435699650 -0500",
-  "parent": "909e1e481f597dde5212e873de50465e6bbf54f1",
-  "merges": ["a6eb8f793f9b68b29fc1d34caa30fdc342c0008d"],
-  "message": [
-    "Merge branch 'CORE-2336_javacc'"]
-},{
-  "commit": "909e1e481f597dde5212e873de50465e6bbf54f1",
-  "tree": "781f1fce4a02352f60e0a2f1bd22f349ffa7d76a",
-  "author": "Nathan Voxland <nathan@voxland.net> 1435173937 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1435173937 -0500",
-  "parent": "866c0575ea590e1c54bf19020b456571669f5cdc",
-  "message": [
-    "Updated version to 3.5.0-SNAPSHOT"]
-},{
-  "commit": "866c0575ea590e1c54bf19020b456571669f5cdc",
-  "tree": "7eec34324a1e4198037348f62329f4f8891448c9",
-  "author": "Nathan Voxland <nathan@voxland.net> 1435173873 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1435173873 -0500",
-  "parent": "939c9f30715173ea45136aaacac9c55d1dfe1b81",
-  "message": [
-    "updated project.version back to snapshot"]
-},{
-  "commit": "939c9f30715173ea45136aaacac9c55d1dfe1b81",
-  "tree": "ca50c2712af4ceccb8439d3169004536c114c9dd",
-  "author": "BuildServer <liquibase-readonly@liquibase.org> 1435169380 +0000",
-  "committer": "BuildServer <liquibase-readonly@liquibase.org> 1435169380 +0000",
-  "parent": "61f2578b81263bb1ae3fe4b537858b64cef7ef5a",
-  "message": [
-    "[maven-release-plugin] prepare for next development iteration"]
-},{
-  "commit": "61f2578b81263bb1ae3fe4b537858b64cef7ef5a",
-  "tree": "ae3b6b23169860b51a0ab3ae62bb1b5b361cc489",
-  "author": "BuildServer <liquibase-readonly@liquibase.org> 1435169378 +0000",
-  "committer": "BuildServer <liquibase-readonly@liquibase.org> 1435169378 +0000",
-  "parent": "f125df596a24d5a920f333178f9b9478dcdc12e5",
-  "message": [
-    "[maven-release-plugin] prepare release liquibase-parent-3.4.0"]
-},{
-  "commit": "f125df596a24d5a920f333178f9b9478dcdc12e5",
-  "tree": "db7c55b7e233a23d6e8718fa0054e99eee5a7a8b",
-  "author": "Nathan Voxland <nathan@voxland.net> 1435168795 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1435168795 -0500",
-  "parent": "bea0eb12898cb55af5b6634cbc60411c494bb2c2",
-  "message": [
-    "Fixed failing test"]
-},{
-  "commit": "bea0eb12898cb55af5b6634cbc60411c494bb2c2",
-  "tree": "e05575184564c326b905dd630ad19eac72e307c4",
-  "author": "Nathan Voxland <nathan@voxland.net> 1435168610 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1435168610 -0500",
-  "parent": "b41374a86a244e32dc30a5363ad3d93c7cd357f1",
-  "message": [
-    "Updated changelog for 3.4.0"]
-},{
-  "commit": "b41374a86a244e32dc30a5363ad3d93c7cd357f1",
-  "tree": "d758a242d7bc57a5dec9bf790321b83eabc6bc45",
-  "author": "Nathan Voxland <nathan@voxland.net> 1435168371 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1435168371 -0500",
-  "parent": "b7d1f44364d6d35b158df660825d2741ee9c60bb",
-  "message": [
-    "Preparing for release"]
-},{
-  "commit": "b7d1f44364d6d35b158df660825d2741ee9c60bb",
-  "tree": "d77ebc60e665ad3da245dc917e0b0fad2b39cacf",
-  "author": "Nathan Voxland <nathan@voxland.net> 1435168196 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1435168196 -0500",
-  "parent": "ca12e6b639312eafb8c9526735118bc0e0a31051",
-  "message": [
-    "CORE-2401 MSSQL handling timestamp according to sql standard, not sqlserver usage"]
-},{
-  "commit": "ca12e6b639312eafb8c9526735118bc0e0a31051",
-  "tree": "2e51c348e73186e9e0dcc32e54e21867e2445cf2",
-  "author": "Nathan Voxland <nathan@voxland.net> 1435167377 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1435167377 -0500",
-  "parent": "fd830cc27e76c7effc11821995a8b27ceed85fb6",
-  "merges": ["ddb6ed8dc64db964ccb1fcf270789d2cc956f276"],
-  "message": [
-    "Merge branch 'ddb'"]
-},{
-  "commit": "fd830cc27e76c7effc11821995a8b27ceed85fb6",
-  "tree": "09c66218952890f5c23d2c7044bd8fc974278c25",
-  "author": "Nathan Voxland <nathan@voxland.net> 1435158607 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1435158607 -0500",
-  "parent": "f82f95c68b0b5935abcd8d88e738a8b82ba3ce3a",
-  "merges": ["6811a24f6f39ef6edbd76841e6166d0f0610f486"],
-  "message": [
-    "Merge remote-tracking branch 'origin/master'"]
-},{
-  "commit": "f82f95c68b0b5935abcd8d88e738a8b82ba3ce3a",
-  "tree": "1208e091df7e705ccec301d275aff6ca1df6900c",
-  "author": "Nathan Voxland <nathan@voxland.net> 1435086178 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1435086178 -0500",
-  "parent": "080911e3bde21b9f12458d367e367eb5d1108f96",
-  "merges": ["29f9083e607816456d39cff2cdd77f7b57fa6e99"],
-  "message": [
-    "Merge branch 'ddb'",
-    "",
-    "Conflicts:",
-    "\tliquibase-core/src/main/java/liquibase/datatype/core/DateTimeType.java"]
-},{
-  "commit": "080911e3bde21b9f12458d367e367eb5d1108f96",
-  "tree": "b46c6cb67b9b5171d84cfb9c7e3699670a4de2ba",
-  "author": "Nathan Voxland <nathan@voxland.net> 1435076823 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1435076823 -0500",
-  "parent": "e7938ed9da9046ac5cd3a7ba04dcf8e330fae35a",
-  "merges": ["93074d5b9bee8a5dc5d550aff6168bc80b0b7406"],
-  "message": [
-    "Merge branch 'ddb'",
-    "",
-    "Conflicts:",
-    "\tliquibase-core/src/main/java/liquibase/datatype/core/DateTimeType.java"]
-},{
-  "commit": "e7938ed9da9046ac5cd3a7ba04dcf8e330fae35a",
-  "tree": "b46c6cb67b9b5171d84cfb9c7e3699670a4de2ba",
-  "author": "Nathan Voxland <nathan@voxland.net> 1434997889 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1434997889 -0500",
-  "parent": "5d607a875054f6a5dbb801ccc581baea9ae820e9",
-  "message": [
-    "CORE-1749 Update change command does not respect whereParams"]
-},{
-  "commit": "5d607a875054f6a5dbb801ccc581baea9ae820e9",
-  "tree": "83addec2a99ab166ff7240fd183fe30bc2381f06",
-  "author": "Nathan Voxland <nathan@voxland.net> 1434997734 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1434997734 -0500",
-  "parent": "19c0fe89a3f25aaebfab6d557ebe90b603aea0fa",
-  "message": [
-    "CORE-1968 Reject invalid ParsedNode instances when loading them into Liquibase objects",
-    "",
-    "Too many false errors, such as in:",
-    "",
-    "<changeSet author=\"auth_name\" id=\"id\">",
-    "        <update tableName=\"tableName\" schemaName=\"schName\">",
-    "<column name=\"colName\" value=\"value\" />",
-    "<whereParams>",
-    "                              <param name=\"primary_key” value=\"key_val\" \"/>",
-    "</whereParams>",
-    "      </update>",
-    "</changeSet>",
-    "",
-    "failing with \"column\" and \"whereParams\""]
-},{
-  "commit": "19c0fe89a3f25aaebfab6d557ebe90b603aea0fa",
-  "tree": "b0e41eca5a9b8d7a00620f43c96d410340909efb",
-  "author": "Nathan Voxland <nathan@voxland.net> 1434997533 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1434997533 -0500",
-  "parent": "1daba70283f7082846f2e6be4b19a3ef76e14af0",
-  "message": [
-    "CORE-1803 DropAll doesn’t delete sequences if they are used as default value in postgres"]
-},{
-  "commit": "1daba70283f7082846f2e6be4b19a3ef76e14af0",
-  "tree": "d8f6eb80a1273fdb5ded91ca255e165dd894d13e",
-  "author": "Nathan Voxland <nathan@voxland.net> 1434993045 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1434993045 -0500",
-  "parent": "b3943e7cc528126492d8ac8996aa85b72d52f415",
-  "message": [
-    "CORE-1968 Reject invalid ParsedNode instances when loading them into Liquibase objects"]
-},{
-  "commit": "b3943e7cc528126492d8ac8996aa85b72d52f415",
-  "tree": "cd1d91be7466f86b2185f6f9cb04600f414f57f1",
-  "author": "Nathan Voxland <nathan@voxland.net> 1434751078 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1434751078 -0500",
-  "parent": "4ad58e103f8d3e27dd5428ed29f842f639782b4c",
-  "message": [
-    "CORE-2219 DB2 for zOs - adding primary key always emits REORG but REORG does not exist on Db2 for zOs"]
-},{
-  "commit": "4ad58e103f8d3e27dd5428ed29f842f639782b4c",
-  "tree": "ae448a5f424302da816f3496fe9f3d39fd568d06",
-  "author": "Nathan Voxland <nathan@voxland.net> 1434750515 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1434750515 -0500",
-  "parent": "6c5ffcc8972e7decdb7118315f01225d92327a05",
-  "message": [
-    "CORE-2224 Index uniqueness is not always recognized correctly"]
-},{
-  "commit": "6c5ffcc8972e7decdb7118315f01225d92327a05",
-  "tree": "795f392891d2b165a9441dd24779bf89bc8b8b6a",
-  "author": "Nathan Voxland <nathan@voxland.net> 1434748284 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1434748284 -0500",
-  "parent": "92e0205fef689a0a012dca3ef0bd646d3c3f6666",
-  "message": [
-    "CORE-2252 XMLChangeLogSerializer writes array object for rollback tag content"]
-},{
-  "commit": "92e0205fef689a0a012dca3ef0bd646d3c3f6666",
-  "tree": "c6f8e0603228a64bd12920a4897f59b9baea6760",
-  "author": "Nathan Voxland <nathan@voxland.net> 1434746839 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1434746839 -0500",
-  "parent": "87b8bf35d38fd7cde8e721aedc7d0c1bd5ac2f53",
-  "message": [
-    "CORE-2256 Drop sequences before tables"]
-},{
-  "commit": "87b8bf35d38fd7cde8e721aedc7d0c1bd5ac2f53",
-  "tree": "a56d03665d43001fe59c52f49ef071c822705e67",
-  "author": "Nathan Voxland <nathan@voxland.net> 1434745430 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1434745430 -0500",
-  "parent": "a8b0871b346041f16c1a0c4b442c511e03310055",
-  "message": [
-    "CORE-2359 Consistently read dataTypeId for all databases"]
-},{
-  "commit": "a8b0871b346041f16c1a0c4b442c511e03310055",
-  "tree": "21babe4939379c2c4f0dd2e4e1bb28145abf0e96",
-  "author": "Nathan Voxland <nathan@voxland.net> 1434742876 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1434742876 -0500",
-  "parent": "73a422b05ca4f7d90b6df43648559822fc156f14",
-  "message": [
-    "CORE-2275 YAML update fails with Unexpected error running Liquibase: java.util.LinkedHashMap cannot be cast to java.util.List"]
-},{
-  "commit": "73a422b05ca4f7d90b6df43648559822fc156f14",
-  "tree": "1353302899826ab13aebf4805dbb4f4951412bc8",
-  "author": "Nathan Voxland <nathan@voxland.net> 1434742515 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1434742515 -0500",
-  "parent": "a114b0848483a9b78eab668c6a73707b435336a5",
-  "message": [
-    "CORE-1904 Slow indexExists performance in Oracle"]
-},{
-  "commit": "a114b0848483a9b78eab668c6a73707b435336a5",
-  "tree": "1a051337f8c5b8bb68c1b475d94f11e62db8cd0b",
-  "author": "Nathan Voxland <nathan@voxland.net> 1434739008 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1434739008 -0500",
-  "parent": "48eb32f450b89f604d3b8e265983156b858cdd26",
-  "message": [
-    "CORE-2383 Change formatted SQL stripComments default from \"true\" to \"false\""]
-},{
-  "commit": "48eb32f450b89f604d3b8e265983156b858cdd26",
-  "tree": "bda9b79e6c2520410b19c2eecbd2154f601e3549",
-  "author": "Nathan Voxland <nathan@voxland.net> 1434729474 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1434729474 -0500",
-  "parent": "cd400bd12120ac13ed8798922c552b646d2183a3",
-  "message": [
-    "CORE-2387 dropPrimaryKey without constraint name on sql server doesn't query schema correctly"]
-},{
-  "commit": "cd400bd12120ac13ed8798922c552b646d2183a3",
-  "tree": "2ba12a632430d076b7855926dc2247b8af31ec85",
-  "author": "Nathan Voxland <nathan@voxland.net> 1434728765 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1434728765 -0500",
-  "parent": "c22f15843299b83f6ff7b1cd8c28ad54d6804d3c",
-  "message": [
-    "CORE-2390 NullPointerException when generating changelog"]
-},{
-  "commit": "c22f15843299b83f6ff7b1cd8c28ad54d6804d3c",
-  "tree": "b7a5d54be4a5fd6ccd1567185130d508f22dce0e",
-  "author": "Nathan Voxland <nathan@voxland.net> 1434725746 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1434725746 -0500",
-  "parent": "209c580521fb3c43a41983c4cb4d48eb89a90399",
-  "message": [
-    "Fixing tests"]
-},{
-  "commit": "209c580521fb3c43a41983c4cb4d48eb89a90399",
-  "tree": "9564957e6a9703be0f36967c46c57ab87e44c551",
-  "author": "Nathan Voxland <nathan@voxland.net> 1434663036 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1434663036 -0500",
-  "parent": "26077943b2e12e9ab1d33f47b7fe7917993a55e8",
-  "merges": ["9897f47bb81d581fa0852937bca8198bcfff48e5"],
-  "message": [
-    "Merge pull request #413 from mrumpf/master",
-    "",
-    "Fixed the classpath handling to make DbDoc work"]
-},{
-  "commit": "26077943b2e12e9ab1d33f47b7fe7917993a55e8",
-  "tree": "c5f2f34005e556ecb4b3889cd956885805916206",
-  "author": "Nathan Voxland <nathan@voxland.net> 1434662814 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1434662814 -0500",
-  "parent": "b3ca3682610809ebc571e9e5e168eec41ec21fe1",
-  "merges": ["52ea1766928a5502758646264d59b64b90868b6f"],
-  "message": [
-    "Merge remote-tracking branch 'origin/master'"]
-},{
-  "commit": "b3ca3682610809ebc571e9e5e168eec41ec21fe1",
-  "tree": "2d0f3d33224bca6e2ef5882e560ae209e781d9fd",
-  "author": "Nathan Voxland <nathan@voxland.net> 1434662754 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1434662754 -0500",
-  "parent": "7da3c6e979f17640f9ca5fc8bb082f326eefd115",
-  "merges": ["264671e74b19adb15faf7866a5a2002bd4030b43"],
-  "message": [
-    "Merge branch 'AartBluestoke-3.3.x'"]
-},{
-  "commit": "7da3c6e979f17640f9ca5fc8bb082f326eefd115",
-  "tree": "d8de60777d344891c056ffe1f291d0a7c7e5716e",
-  "author": "Nathan Voxland <nathan@voxland.net> 1434658992 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1434658992 -0500",
-  "parent": "016fe147c951ff48030f3f15c584be0c300a0391",
-  "message": [
-    "CORE-2005 /usr/bin/liquibase: Syntax error: \"else\" unexpected"]
-},{
-  "commit": "016fe147c951ff48030f3f15c584be0c300a0391",
-  "tree": "22d6f297c9351b3a79930fa5a9da135dfc6eea33",
-  "author": "Nathan Voxland <nathan@voxland.net> 1434658400 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1434658400 -0500",
-  "parent": "719f3ba6bc6bbe06062a87b1b62c67ec43c0dcba",
-  "merges": ["624b10ae92f6684f819866a359fc3b78d09750a8"],
-  "message": [
-    "Merge branch 'ddb'"]
-},{
-  "commit": "719f3ba6bc6bbe06062a87b1b62c67ec43c0dcba",
-  "tree": "80de812d2c77a3668fdd7b3ecf45c19978cc3af0",
-  "author": "Nathan Voxland <nathan@voxland.net> 1434658392 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1434658392 -0500",
-  "parent": "0f30ffd35f823ecfdf7194c48b73f5489256eac8",
-  "merges": ["f3d30ff0e97d69f05e87bd54a2cb06445af4a2b2"],
-  "message": [
-    "Merge remote-tracking branch 'origin/master'"]
-},{
-  "commit": "0f30ffd35f823ecfdf7194c48b73f5489256eac8",
-  "tree": "3f8b1d88b89cd883e4f99b0034d3366ee3e8e527",
-  "author": "Nathan Voxland <nathan@voxland.net> 1434393409 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1434393409 -0500",
-  "parent": "842861eb85879ccdf44089d8fe6919fbae079b2d",
-  "merges": ["18d041629181cc25c1fcf863a7a16fc88a914768"],
-  "message": [
-    "Merge branch '3.3.x'",
-    "",
-    "Conflicts:",
-    "\tliquibase-core/pom.xml"]
-},{
-  "commit": "842861eb85879ccdf44089d8fe6919fbae079b2d",
-  "tree": "daf101150fb60d5f268b0dc21288a530ef4539b8",
-  "author": "Nathan Voxland <nathan@voxland.net> 1434386372 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1434386372 -0500",
-  "parent": "a43357667a071144c659cecfdac0a412c1c24ad0",
-  "merges": ["ce51f7e88927333b1e3bd5a1e2007c9165032ff5"],
-  "message": [
-    "Merge remote-tracking branch 'origin/master'"]
-},{
-  "commit": "a43357667a071144c659cecfdac0a412c1c24ad0",
-  "tree": "9cd6c84c58e3e426870200c544ea80df7dd22062",
-  "author": "Nathan Voxland <nathan@voxland.net> 1434386200 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1434386200 -0500",
-  "parent": "c0fb5fe6639b75cf0cc36fae590e4a00c5dde233",
-  "message": [
-    "Reformatted after merge"]
-},{
-  "commit": "c0fb5fe6639b75cf0cc36fae590e4a00c5dde233",
-  "tree": "50639cb34aa8c8eecfbe86777761d94fb2d0e03d",
-  "author": "Nathan Voxland <nathan@voxland.net> 1434386097 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1434386097 -0500",
-  "parent": "2567b9383ed35b4e3a24bbc7726ef587007f0339",
-  "merges": ["4aa5887bccc8182216d2642908a0ecfe71c2cb4f"],
-  "message": [
-    "Merge branch 'ddb'",
-    "",
-    "Conflicts:",
-    "\tliquibase-core/src/main/java/liquibase/integration/commandline/CommandLineUtils.java",
-    "\tliquibase-core/src/main/java/liquibase/serializer/core/yaml/YamlSnapshotSerializer.java",
-    "\tliquibase-core/src/main/java/liquibase/snapshot/JdbcDatabaseSnapshot.java",
-    "\tliquibase-core/src/main/resources/liquibase/parser/core/xml/dbchangelog-3.4.xsd"]
-},{
-  "commit": "2567b9383ed35b4e3a24bbc7726ef587007f0339",
-  "tree": "9819384789baf15af23b599db43b1d2f11f1cc4f",
-  "author": "Nathan Voxland <nathan@voxland.net> 1432917325 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1432917325 -0500",
-  "parent": "abf359bf945e5fbbae484b72a6ed759c44aeebfb",
-  "message": [
-    "CORE-2236 Support .yml extension in YamlChangeLogSerializer"]
-},{
-  "commit": "abf359bf945e5fbbae484b72a6ed759c44aeebfb",
-  "tree": "47d01e4b28476dd7cb1a1deba3b40160c03a053f",
-  "author": "Nathan Voxland <nathan@voxland.net> 1432916454 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1432916454 -0500",
-  "parent": "6ac102fe581cb2cf7f480d23cf4ef59ae61e8b13",
-  "merges": ["cde2f9a7acfe9300b6698f279b963e02c7523462"],
-  "message": [
-    "Merge remote-tracking branch 'origin/master'"]
-},{
-  "commit": "6ac102fe581cb2cf7f480d23cf4ef59ae61e8b13",
-  "tree": "e8e4e77e50941f17f2b3193e2007a82cc9a246e2",
-  "author": "Nathan Voxland <nathan@voxland.net> 1432913671 -0500",
-  "committer": "Nathan Voxland <nathan@voxland.net> 1432913671 -0500",
-  "parent": "2185c98dd8f349a0b5323039abae65b7a00f3ae9",
-  "message": [
-    "Improved javadoc documentation for dropAll"]
 }]}

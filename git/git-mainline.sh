@@ -17,10 +17,28 @@ function filterMainLine() {
         while [ "$hash" != "$firstParent" ]
         do
             skipCnt=$(( skipCnt + 1 ))
-#            printf "... skipping %3d: %s (not %s)\n" "$skipCnt" "$hash" "$firstParent"
             read hash parentHash other || return 1
         done
     done
+}
+
+function rawAuthorToJson() {
+    local fullname=""
+    local email=""
+    while [ -n "$1" ]; do
+        local token="$1"
+        shift
+        case "$token" in
+        '<'*'>')
+            printf '"email": "%s", ' "${token:1:${#token}-2}"
+            break;;
+        *) fullname="$fullname $token";;
+        esac
+    done
+    printf '"name": "%s", ' "${fullname:1}"
+    local time=$1
+    local tz=$2
+    printf '"time": "%s"' $(date --iso-8601=sec -d 'TZ="'"$tz"'" @'"$time")
 }
 
 function rawToJson() {
@@ -33,11 +51,12 @@ function rawToJson() {
             ;;
         'author'|'committer')
             #convert datetime to iso: date -d 'TZ="+0200" @1444490433' --iso-8601=sec
-            printf '  "%s": "%s",\n' "$key" "$value"
+            printf '  "%s": {' "$key"
+            rawAuthorToJson $value
+            printf '},\n'
             ;;
         'parent')
             if [ -z "$parent" ]; then
-                #TODO other parents will be rendered as array "merged"
                 parent="$value"
             else
                 merges="$value "

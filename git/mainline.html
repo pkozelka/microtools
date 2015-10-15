@@ -49,7 +49,9 @@
             <div class="panel-body">
                 <ul>
                     <li ng-repeat="c in data.commits">
-                        <a href="{{c.commit}}">{{c.message[0]}}</a> <i>({{c.author}})</i><span ng-if="c.message.length>1">...</span>
+                        <code>{{c.author.time | limitTo : 19 : 0}}</code>
+                        <span title="{{c.author.email}}">{{c.author.name}}</span>:
+                        <a href="#commit/{{c.commit}}">{{c.message[0]}}</a> <span ng-if="c.message.length>1">...</span>
                     </li>
                 </ul>
             </div>
