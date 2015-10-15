@@ -86,7 +86,8 @@ function xxargs() {
 }
 
 function printAllRevisions() {
-    printf '{"commits":['
+    local repositoryUrl=$(git config "remote.origin.url")
+    printf '{ "repository": "%s", "commits":[' "$repositoryUrl"
     git rev-list --parents HEAD | head -100 | filterMainLine | xxargs toJson
     # we must soon find a better way than null
     printf "REMOVE_TRAILING_COMMA]}"
