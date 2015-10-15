@@ -90,8 +90,8 @@ function xxargs() {
     done
 }
 
-printf "["
+printf "{"commits":["
 git rev-list --parents HEAD | head | filterMainLine | xxargs toJson
-printf "null]"
+printf "null]}"
 
 
