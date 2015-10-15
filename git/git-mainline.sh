@@ -63,6 +63,7 @@ function rawToJson() {
         '    '*)
             local line=${REPLY:4}
             line=${line//\"/\\\"}
+            line="${line//	/\\t}"
             printf '\n    "%s",' "$line"
             ;;
         '') break;;
