@@ -50,8 +50,10 @@
                 <ul>
                     <li ng-repeat="c in data.commits">
                         <code>{{c.author.time | limitTo : 19 : 0}}</code>
+                        <code>{{c.commit | limitTo : 7 : 0}}</code>...
+                        <input size="1" placeholder="?"></input>
                         <span title="{{c.author.email}}">{{c.author.name}}</span>:
-                        <a href="#commit/{{c.commit}}">{{c.message[0]}}</a> <span ng-if="c.message.length>1">...</span>
+                        <a href="#commit/{{c.commit}}">{{c.message[0]}}</a> <span ng-if="c.message.length&gt;1">...</span>
                     </li>
                 </ul>
             </div>
