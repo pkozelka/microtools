@@ -17,3 +17,12 @@ Synopsis:
 ```
 ./astash-ls-pr.sh
 ```
+
+
+## Show mainline of commits
+
+Generates json view of main commit line
+
+```
+./git-mainline.sh 
+```
