@@ -8,8 +8,8 @@ function markTagParent() {
     local findPattern=${1?'specify tag prefix'}
     local addPrefix=${2-'RELEASE-'}
 
-    for tag in $(git tag "${findPattern}"); do
-        local parent=$(git rev-list --max-count=2 | tail -1)
+    for tag in $(git tag -l "${findPattern}"); do
+        local parent=$(git rev-list --max-count=2 $tag | tail -1)
         git tag "${addPrefix}${tag}" "$parent"
     done
 }
