@@ -36,37 +36,76 @@ function refactorAllClasses() {
     # TODO
 }
 
+function mvJavaFile() {
+    echo "$@"
+}
+
+function mvJavaTree() {
+    echo "$@"
+}
+
 function doFileRenames() {
     # translate control file into SED
     #   which generates "mv" arg pairs, one per line, for piped `find`
-
+    cat <<EOF >"$TMP/name-filter.sh"
+while read REPLY; do
+case "\$REPLY" in
+EOF
+    cat <<EOF >"$TMP/name-filter.sh.2"
+*) continue;;
+esac
+done
+EOF
     # first, just individual class renames
     local new old
     readControlFile | while read new old; do
         local newClass="${new/#*\./}"
-        [ -z "$newClass" ] && continue
         local newPackage="${new%.*}"
         local oldClass="${old/#*\./}"
         local oldPackage="${old%.*}"
-        case "$oldClass" in
-        '') oldClass="$newClass"; old="$old$newClass";;
-        esac
-#        printf "$oldPackage:$oldClass --> $newPackage:$newClass"
         local oldPath="${oldPackage//\.//}"
         local newPath="${newPackage//\.//}"
-#        printf "$oldPath/$oldClass --> $newPath/$newClass :SED: "
-        # SED: filenames on input - find * -name '*.java'
-        #      dir + args for mv on output
-        printf '/\/%s\.java$/{s:^\(.*\)/%s\.java$:\\1 %s.java %s:;p;}\n' "${oldPath//\//\\/}\/$oldClass" "$oldPath/$oldClass" "$oldPath/$oldClass" "$newPath/$newClass"
+        if [ -z "$newClass" ]; then
+            # just change package
+            if [ -n "$oldClass" ]; then
+                echo "ERROR: Nonsense in input: '$new=$old'" >&2
+                exit 1
+            fi
+            echo "$oldPath $newPath" >>$TMP/mv-package.txt
+            echo '*/'"$oldPath"') '"$0"' mvJavaTree "$REPLY" "$oldPackage" "$newPackage";;' >>"$TMP/name-filter.sh"
+            echo '*/'"$oldPath"'/*) '"$0"' mvJavaTree "$REPLY" "$oldPackage" "$newPackage";;' >>"$TMP/name-filter.sh"
+        else
+            # schedule single file rename
+            case "$oldClass" in
+            '') oldClass="$newClass"; old="$old$newClass";;
+            esac
+#            printf "$oldPackage:$oldClass --> $newPackage:$newClass"
+#            printf "$oldPath/$oldClass --> $newPath/$newClass :SED: "
+            # SED: filenames on input - find * -name '*.java'
+            #      dir + args for mv on output
+            printf '/\/%s\.java$/{s:^\(.*\)/%s\.java$:'"$0"' mvJavaFile \\1 %s.java %s:;p;}\n' "${oldPath//\//\\/}\/$oldClass" "$oldPath/$oldClass" "$oldPath/$oldClass" "$newPath/$newClass" >>$TMP/mv-file.sed
+        fi
     done
+    cat "$TMP/name-filter.sh.2" >>"$TMP/name-filter.sh"
+    find * -name '*.java' >$TMP/files.txt
+    find * -type f >$TMP/dirs.txt
+    sed -n -f $TMP/mv-file.sed $TMP/files.txt >$TMP/rename1.sh
+    sh $TMP/rename1.sh
+    sort -u "$TMP/dirs.txt" | sh "$TMP/name-filter.sh"
 }
 
 #### MAIN ####
 
-CONTROLFILE=${1-'rename.txt'}
+CONTROLFILE='rename.txt'
 
 TMP=/tmp/refactor
-rm -rf $TMP
-mkdir -p $TMP
 
-doFileRenames "$CONTROLFILE"
+case "$1" in
+'')
+    rm -rf $TMP
+    mkdir -p $TMP
+    doFileRenames
+    ;;
+*) "$@";;
+esac
+
