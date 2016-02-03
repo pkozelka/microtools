@@ -51,8 +51,13 @@ function doFileRenames() {
         case "$oldClass" in
         '') oldClass="$newClass"; old="$old$newClass";;
         esac
-        printf "$oldPackage:$oldClass --> $newPackage:$newClass :SED: "
-        printf '\n'
+#        printf "$oldPackage:$oldClass --> $newPackage:$newClass"
+        local oldPath="${oldPackage//\.//}"
+        local newPath="${newPackage//\.//}"
+#        printf "$oldPath/$oldClass --> $newPath/$newClass :SED: "
+        # SED: filenames on input - find * -name '*.java'
+        #      dir + args for mv on output
+        printf '/\/%s\.java$/{s:^\(.*\)/%s\.java$:\\1 %s.java %s:;p;}\n' "${oldPath//\//\\/}\/$oldClass" "$oldPath/$oldClass" "$oldPath/$oldClass" "$newPath/$newClass"
     done
 }
 
