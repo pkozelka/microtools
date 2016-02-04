@@ -17,8 +17,8 @@ cat <<EOF
 EOF
 
 sed -f - rename.txt << "EOF"
-/^[[:alnum:]_\.]\+\.=[[:alnum:]_\.]\+[[:alnum:]_]*/{
-s#^\([[:alnum:]_\.]\+\)\.=\([[:alnum:]_\.]\+\)\.\([^.]\+\)$#<entry oldName="\2.\3" newName="\1.\3" type="class"/>##;
+/^[[:alnum:]_\.]\+=[[:alnum:]_\.]\+$/{
+s#^\([[:alnum:]_\.]\+[^\.]\)=\([[:alnum:]_\.]\+[^\.]\)$#<entry oldName="\2" newName="\1" type="class"/>##;
 s#^\([[:alnum:]_\.]\+\)\.=\([[:alnum:]_\.]\+\)\.$#<entry oldName="\2" newName="\1" type="package" recursive="true"/>##;
 s:^:  :;
 }
