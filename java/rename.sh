@@ -94,6 +94,15 @@ EOF
     sort -u "$TMP/dirs.txt" | sh "$TMP/name-filter.sh"
 }
 
+function listModuleRoots() {
+    local basedir
+    find $PWD/* -name 'pom.xml' -printf '%h\n' | sort | while read basedir; do
+        for i in src/main/java src/test/java src/main/resources src/test/resources src/main/webapp/WEB-INF/classes; do
+            [ -d "$basedir/$i" ] && echo "$basedir/$i"
+        done
+    done
+}
+
 #### MAIN ####
 
 CONTROLFILE='rename.txt'
@@ -104,7 +113,8 @@ case "$1" in
 '')
     rm -rf $TMP
     mkdir -p $TMP
-    doFileRenames
+#    doFileRenames
+    listModuleRoots
     ;;
 *) "$@";;
 esac
