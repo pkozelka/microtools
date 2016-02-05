@@ -31,4 +31,5 @@ cat <<EOF
 EOF
 }
 
-cat rename.txt | generateXml #>$NAME.xml
+cat rename.txt | generateXml | xmllint --format - >$NAME.xml
+echo "Generated IDEA migration script into file $NAME.xml" >&2
