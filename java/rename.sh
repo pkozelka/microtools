@@ -1,6 +1,7 @@
 #!/bin/bash
 
 MV="git mv"
+ADD="git add"
 
 function rename() {
     local file=$1
@@ -20,12 +21,17 @@ function javaRename() {
         verbose="-v"
         shift
     fi
-    local origFile="$1"
-    local newFile="$2"
-    [ -f "$origFile" ] || return
-    mkdir -p "${newFile%/*}"
-    $MV $verbose "$origFile" "$newFile" || return 1
-    rmdir --parents --ignore-fail-on-non-empty "${origFile%/*}"
+    local sourceRoot="$1"
+    local origFile="$2"
+    local newFile="$3"
+    [ -f "$sourceRoot/$origFile" ] || return
+    local newPackage=${newFile%/*.*}
+    newPackage=${newPackage//\//.}
+    mkdir -p "$sourceRoot/${newFile%/*}"
+    $MV $verbose "$sourceRoot/$origFile" "$sourceRoot/$newFile" || return 1
+    sed -i 's:^package .*$:package '"${newPackage}"';:' "$sourceRoot/$newFile" || return 1
+    $ADD "$sourceRoot/$newFile" || return 1
+    rmdir --parents --ignore-fail-on-non-empty "$sourceRoot/${origFile%/*}"
 }
 
 function doFileRenames() {
@@ -48,21 +54,22 @@ function doFileRenames() {
             # recursively rename all java files
             [ -d "$sourceRoot/$oldPath" ] || continue
             local oldJavaFile
-            find "$sourceRoot/$oldPath" -name '*.java' | while read oldJavaFile; do
+            find "$sourceRoot/$oldPath" -name '*.java' | while read oldJavaFileFull; do
+                local oldJavaFile=${oldJavaFileFull:${#sourceRoot}+1}
                 local regex=${oldPath//\//\\/}
                 local newJavaFile=${oldJavaFile//$regex/$newPath}
                 if [ "$newJavaFile" == "$oldJavaFile" ]; then
                     echo "ERROR: Unchanged ? $regex ? $newJavaFile" >&2
                     continue
                 fi
-                javaRename "$oldJavaFile" "$newJavaFile"
+                javaRename "$sourceRoot" "$oldJavaFile" "$newJavaFile"
             done
         else
             # single file rename
             case "$oldClass" in
             '') oldClass="$newClass"; old="$old$newClass";;
             esac
-            javaRename --verbose "$sourceRoot/$oldPath/$oldClass.java" "$sourceRoot/$newPath/$newClass.java"
+            javaRename --verbose "$sourceRoot" "$oldPath/$oldClass.java" "$newPath/$newClass.java"
         fi
     done
 }
