@@ -82,20 +82,23 @@ function listModuleRoots() {
     done
 }
 
+function renameJavaFiles()
+    for sourceRoot in `listModuleRoots`; do 
+        doFileRenames "$sourceRoot"
+    done
+}
+
+function fixJavaImports() {
+    true # TODO
+}
+
 #### MAIN ####
 
 CONTROLFILE='rename.txt'
 
 TMP=/tmp/refactor
 
-case "$1" in
-'')
-    rm -rf $TMP
-    mkdir -p $TMP
-    for sourceRoot in `listModuleRoots`; do 
-        doFileRenames "$sourceRoot"
-    done
-    ;;
-*) "$@";;
-esac
+rm -rf $TMP
+mkdir -p $TMP
 
+renameJavaFiles
