@@ -36,7 +36,6 @@ function javaRename() {
 
 function doFileRenames() {
     local sourceRoot="$1"
-    # first, just individual class renames
     local new old
     readControlFile | while read new old; do
         local newClass="${new/#*\./}"
