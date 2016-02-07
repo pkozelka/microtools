@@ -82,8 +82,8 @@ function listModuleRoots() {
     done
 }
 
-function renameJavaFiles()
-    for sourceRoot in `listModuleRoots`; do 
+function renameJavaFiles() {
+    for sourceRoot in `listModuleRoots`; do
         doFileRenames "$sourceRoot"
     done
 }
