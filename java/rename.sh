@@ -111,6 +111,8 @@ function fixReferences() {
         echo "Fixing references in $sourceRoot"
         find $sourceRoot -type f | xargs sed -i -f "$TMP/fixReferences.sed"
     done
+    echo "Fixing references in pom.xml files"
+    sed -i -f "$TMP/fixReferences.sed" $(find * -name "pom.xml")
 }
 
 #### MAIN ####
@@ -124,4 +126,3 @@ mkdir -p $TMP
 
 renameJavaFiles
 fixReferences
-git commit -am 'rename.txt applied'
