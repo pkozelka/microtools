@@ -52,8 +52,9 @@ function doFileRenames() {
             fi
             # recursively rename all java files
             [ -d "$sourceRoot/$oldPath" ] || continue
+            echo "RENAMING $sourceRoot/$oldPath --> $sourceRoot/$newPath" >&2
             local oldJavaFile
-            find "$sourceRoot/$oldPath" -name '*.java' | while read oldJavaFileFull; do
+            find "$sourceRoot/$oldPath" -name '*.java' -o -name '*.groovy' | while read oldJavaFileFull; do
                 local oldJavaFile=${oldJavaFileFull:${#sourceRoot}+1}
                 local regex=${oldPath//\//\\/}
                 local newJavaFile=${oldJavaFile//$regex/$newPath}
