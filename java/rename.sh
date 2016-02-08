@@ -95,11 +95,10 @@ function fixReferences() {
     local new old
     readControlFile | while read new old; do
         local regex="${old//./\\.}"
-        printf '/^import %s/{s:%s:%s:}\n' "$regex" "$regex" "$new" >>"$TMP/fixReferences.sed"
+        printf '/^import \(static \)%s/{s:%s:%s:}\n' "$regex" "$regex" "$new" >>"$TMP/fixReferences.sed"
         printf '/^%s/{s:%s:%s:}\n' "$regex" "$regex" "$new" >>"$TMP/fixReferences.sed"
         local oldSlash="${old//.//}"
         local newSlash="${new//.//}"
-        printf '/^import %s/{s:%s:%s:}\n' "$regex" "$regex" "$new" >>"$TMP/fixReferences.sed"
         printf '/^%s/{s:%s:%s:}\n' "$regex" "$regex" "$new" >>"$TMP/fixReferences.sed"
     done
     local sourceRoot
