@@ -83,13 +83,25 @@ function listModuleRoots() {
 }
 
 function renameJavaFiles() {
+    local sourceRoot
     for sourceRoot in `listModuleRoots`; do
         doFileRenames "$sourceRoot"
     done
 }
 
-function fixJavaImports() {
-    true # TODO
+function fixReferences() {
+    echo "Gathering reference changes"
+    local new old
+    readControlFile | while read new old; do
+        local regex="${old//./\\.}"
+        printf '/^import %s/{s:%s:%s:}\n' "$regex" "$regex" "$new" >>"$TMP/fixReferences.sed"
+        printf '/^%s/{s:%s:%s:}\n' "$regex" "$regex" "$new" >>"$TMP/fixReferences.sed"
+    done
+    local sourceRoot
+    for sourceRoot in `listModuleRoots`; do
+        echo "Fixing references in $sourceRoot"
+        find $sourceRoot -name '*.java' | xargs sed -i -f "$TMP/fixReferences.sed"
+    done
 }
 
 #### MAIN ####
@@ -102,3 +114,4 @@ rm -rf $TMP
 mkdir -p $TMP
 
 renameJavaFiles
+fixReferences
