@@ -15,7 +15,7 @@ function readControlFile() {
     sed '/^#/d;/^$/d;s:=: :' $CONTROLFILE
 }
 
-function javaRename() {
+function smartRename() {
     local verbose=""
     if [ "$1" == '--verbose' ]; then
         verbose="-v"
@@ -25,11 +25,16 @@ function javaRename() {
     local origFile="$2"
     local newFile="$3"
     [ -f "$sourceRoot/$origFile" ] || return
-    local newPackage=${newFile%/*.*}
-    newPackage=${newPackage//\//.}
     mkdir -p "$sourceRoot/${newFile%/*}"
     $MV $verbose "$sourceRoot/$origFile" "$sourceRoot/$newFile" || return 1
-    sed -i 's:^package .*$:package '"${newPackage}"';:' "$sourceRoot/$newFile" || return 1
+    # refactor
+    case "$origFile" in
+    *'.java'|*'.groovy') 
+        local newPackage=${newFile%/*.*}
+        newPackage=${newPackage//\//.}
+        sed -i 's:^package .*$:package '"${newPackage}"';:' "$sourceRoot/$newFile" || return 1
+        ;;
+    esac;
     $ADD "$sourceRoot/$newFile" || return 1
     rmdir --parents --ignore-fail-on-non-empty "$sourceRoot/${origFile%/*}"
 }
@@ -54,22 +59,22 @@ function doFileRenames() {
             [ -d "$sourceRoot/$oldPath" ] || continue
             echo "RENAMING $sourceRoot/$oldPath --> $sourceRoot/$newPath" >&2
             local oldJavaFile
-            find "$sourceRoot/$oldPath" -name '*.java' -o -name '*.groovy' | while read oldJavaFileFull; do
-                local oldJavaFile=${oldJavaFileFull:${#sourceRoot}+1}
+            find "$sourceRoot/$oldPath" -type f | while read oldFileFull; do
+                local oldFile=${oldFileFull:${#sourceRoot}+1}
                 local regex=${oldPath//\//\\/}
-                local newJavaFile=${oldJavaFile//$regex/$newPath}
-                if [ "$newJavaFile" == "$oldJavaFile" ]; then
-                    echo "ERROR: Unchanged ? $regex ? $newJavaFile" >&2
+                local newFile=${oldFile//$regex/$newPath}
+                if [ "$newFile" == "$oldFile" ]; then
+                    echo "ERROR: Unchanged ? $regex ? $newFile" >&2
                     continue
                 fi
-                javaRename "$sourceRoot" "$oldJavaFile" "$newJavaFile"
+                smartRename "$sourceRoot" "$oldFile" "$newFile"
             done
         else
-            # single file rename
+            # individual file rename
             case "$oldClass" in
             '') oldClass="$newClass"; old="$old$newClass";;
             esac
-            javaRename --verbose "$sourceRoot" "$oldPath/$oldClass.java" "$newPath/$newClass.java"
+            smartRename --verbose "$sourceRoot" "$oldPath/$oldClass.java" "$newPath/$newClass.java"
         fi
     done
 }
