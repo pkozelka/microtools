@@ -82,7 +82,7 @@ function doFileRenames() {
 function listModuleRoots() {
     local basedir
     find * -name 'pom.xml' -printf '%h\n' | sort | while read basedir; do
-        for i in src/main/java src/test/java src/main/resources src/test/resources src/main/webapp/WEB-INF/classes; do
+        for i in src/main/java src/test/java src/main/resources src/test/resources src/main/webapp/WEB-INF/classes src/main/resources/moxy; do
             [ -d "$basedir/$i" ] && echo "$basedir/$i"
         done
     done
@@ -124,4 +124,4 @@ mkdir -p $TMP
 
 renameJavaFiles
 fixReferences
-#git commit -am 'rename.txt applied'
+git commit -am 'rename.txt applied'
