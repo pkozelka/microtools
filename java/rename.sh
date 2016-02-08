@@ -96,11 +96,15 @@ function fixReferences() {
         local regex="${old//./\\.}"
         printf '/^import %s/{s:%s:%s:}\n' "$regex" "$regex" "$new" >>"$TMP/fixReferences.sed"
         printf '/^%s/{s:%s:%s:}\n' "$regex" "$regex" "$new" >>"$TMP/fixReferences.sed"
+        local oldSlash="${old//.//}"
+        local newSlash="${new//.//}"
+        printf '/^import %s/{s:%s:%s:}\n' "$regex" "$regex" "$new" >>"$TMP/fixReferences.sed"
+        printf '/^%s/{s:%s:%s:}\n' "$regex" "$regex" "$new" >>"$TMP/fixReferences.sed"
     done
     local sourceRoot
     for sourceRoot in `listModuleRoots`; do
         echo "Fixing references in $sourceRoot"
-        find $sourceRoot -name '*.java' | xargs sed -i -f "$TMP/fixReferences.sed"
+        find $sourceRoot -type f | xargs sed -i -f "$TMP/fixReferences.sed"
     done
 }
 
