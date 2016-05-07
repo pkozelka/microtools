@@ -6,8 +6,17 @@ NEXUS_CONTENT_URL="http://localhost:8081/service/local/repositories/releases/con
 LOCAL_DIR="$PWD"
 #
 
+function log() {
+	echo "$@"
+	echo "$@" >>$LOGFILE
+}
+
 function monitorDirectory() {
-	inotifywait -q -m -e close_write,delete --format '%e %w%f' -r "$LOCAL_DIR"
+	inotifywait -q -m -r \
+		-e close_write,delete \
+		--format '%e %w%f' \
+		@$LOGFILE \
+		"$LOCAL_DIR"
 }
 
 function syncToNexus() {
@@ -17,13 +26,20 @@ function syncToNexus() {
 	esac
 	local events filename
 	while read events filename; do
+		# inotify exclusion doesn't seem to work
+		[ "$filename" == "$LOGFILE" ] && continue
+		#
 		local uri=${filename:${#LOCAL_DIR}+1}
 		case "$events" in
 		'CLOSE_WRITE,CLOSE')
-			$CURL --upload-file "$filename" "$NEXUS_CONTENT_URL/$uri"
+			log "a $filename"
+			$CURL --upload-file "$filename" "$NEXUS_CONTENT_URL/$uri" || continue
+			log "A $filename"
 			;;
 		'DELETE' | 'DELETE,ISDIR')
-			$CURL -X DELETE "$NEXUS_CONTENT_URL/$uri"
+			log "d $filename"
+			$CURL -X DELETE "$NEXUS_CONTENT_URL/$uri" || continue
+			log "D $filename"
 			;;
 		esac
 	done
@@ -57,7 +73,7 @@ while [ -n "$1" ]; do
 	esac
 done
 
-#TODO: log all synced changes
+LOGFILE="$LOCAL_DIR/.nexus-sync.log"
 
 #TODO: sync all files omitted in the meantime: findFilesOlderThanLog | syncToNexus
 
