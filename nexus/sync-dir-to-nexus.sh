@@ -27,7 +27,11 @@ function syncToNexus() {
 	local events filename
 	while read events filename; do
 		# inotify exclusion doesn't seem to work
-		[ "$filename" == "$LOGFILE" ] && continue
+		case "$filename" in
+		"$LOGFILE") continue;;
+		*".md5"|*".sha1") continue;;
+		*"/maven-metadata.xml") continue;;
+		esac
 		#
 		local uri=${filename:${#LOCAL_DIR}+1}
 		case "$events" in
