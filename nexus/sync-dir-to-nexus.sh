@@ -19,16 +19,35 @@ function monitorDirectory() {
 		"$LOCAL_DIR"
 }
 
-function syncToNexus() {
-	local CURL="curl -u $NEXUS_USER_PASS"
-	case "$NEXUS_CONTENT_URL" in
-	'https://'*) CURL="$CURL -k";;
+function nexusCurl() {
+	local actionCode=$1
+	local uri=$2
+	shift 2
+	local http_code=$($CURL \
+		"$@" "$NEXUS_CONTENT_URL/$uri" \
+		--output /dev/stderr --write-out "%{http_code}" \
+		-v 2>"$LOCAL_DIR/.curl"\
+		) || return 1
+	case "$http_code" in
+	2??)
+		log "$actionCode $http_code $uri"
+		return 0
+		;;
+	*)
+		echo "$actionCode $http_code !$uri" >&2
+		cat "$LOCAL_DIR/.curl" >&2
+		return 1
+		;;
 	esac
+}
+
+function syncToNexus() {
 	local events filename
 	while read events filename; do
 		# inotify exclusion doesn't seem to work
 		case "$filename" in
 		"$LOGFILE") continue;;
+		"$LOCAL_DIR/."*) continue;;
 		*".md5"|*".sha1") continue;;
 		*"/maven-metadata.xml") continue;;
 		esac
@@ -36,14 +55,10 @@ function syncToNexus() {
 		local uri=${filename:${#LOCAL_DIR}+1}
 		case "$events" in
 		'CLOSE_WRITE,CLOSE')
-			log "a $filename"
-			$CURL --upload-file "$filename" "$NEXUS_CONTENT_URL/$uri" || continue
-			log "A $filename"
+			nexusCurl "A" "$uri" --upload-file "$filename" || continue
 			;;
 		'DELETE' | 'DELETE,ISDIR')
-			log "d $filename"
-			$CURL -X DELETE "$NEXUS_CONTENT_URL/$uri" || continue
-			log "D $filename"
+			nexusCurl "D" "$uri" -X DELETE || continue
 			;;
 		esac
 	done
@@ -78,6 +93,10 @@ while [ -n "$1" ]; do
 done
 
 LOGFILE="$LOCAL_DIR/.nexus-sync.log"
+CURL="curl -u $NEXUS_USER_PASS"
+case "$NEXUS_CONTENT_URL" in
+'https://'*) CURL="$CURL -k";;
+esac
 
 #TODO: sync all files omitted in the meantime: findFilesOlderThanLog | syncToNexus
 
