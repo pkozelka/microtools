@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Defaults for parameters
-NEXUS_USER_PASS="admin:admin123"
+NEXUS_USER_PASS="deployment:deployment123"
 NEXUS_CONTENT_URL="http://localhost:8081/service/local/repositories/releases/content"
 LOCAL_DIR="$PWD"
 #
@@ -9,6 +9,10 @@ LOCAL_DIR="$PWD"
 function log() {
 	echo "$@"
 	echo "$@" >>$LOGFILE
+}
+
+function resyncDirectory() {
+	find $LOCAL_DIR/* -newer $LOGFILE -type f -printf 'resync %p\n'
 }
 
 function monitorDirectory() {
@@ -54,7 +58,7 @@ function syncToNexus() {
 		#
 		local uri=${filename:${#LOCAL_DIR}+1}
 		case "$events" in
-		'CLOSE_WRITE,CLOSE')
+		'CLOSE_WRITE,CLOSE' | 'resync')
 			nexusCurl "A" "$uri" --upload-file "$filename" || continue
 			;;
 		'DELETE' | 'DELETE,ISDIR')
@@ -98,8 +102,7 @@ case "$NEXUS_CONTENT_URL" in
 'https://'*) CURL="$CURL -k";;
 esac
 
-#TODO: sync all files omitted in the meantime: findFilesOlderThanLog | syncToNexus
-
+resyncDirectory | syncToNexus
 monitorDirectory | syncToNexus
 
 }
