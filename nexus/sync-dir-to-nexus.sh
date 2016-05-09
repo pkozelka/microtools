@@ -52,8 +52,8 @@ function syncToNexus() {
 		case "$filename" in
 		"$LOGFILE") continue;;
 		"$LOCAL_DIR/."*) continue;;
-		*".md5"|*".sha1") continue;;
-		*"/maven-metadata.xml") continue;;
+		*'.md5'|*'.sha1') continue;;
+		*'/maven-metadata.xml') continue;;
 		esac
 		#
 		local uri=${filename:${#LOCAL_DIR}+1}
