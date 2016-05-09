@@ -68,6 +68,21 @@ function syncToNexus() {
 	done
 }
 
+function checkSingletonLock() {
+    local pidfile="$LOCAL_DIR/.pid"
+    local pid
+    [ -s "$pidfile" ] && pid=$(cat "$pidfile")
+    local procName
+    [ -n "$pid" ] && procName=$(ps -p "$pid" -o comm=)
+    if [ -n "$procName" ]; then
+        # already running, cannot lock
+        echo "ERROR: already running with pid=$pid"
+        return 1
+    fi
+    # lock
+    echo "$$" >"$pidfile"
+}
+
 #### MAIN
 
 function doMain() {
@@ -95,6 +110,10 @@ while [ -n "$1" ]; do
 	*) break;;
 	esac
 done
+
+# DO NOT RUN TWICE on the same dir
+checkSingletonLock || exit 1
+#
 
 LOGFILE="$LOCAL_DIR/.nexus-sync.log"
 CURL="curl -u $NEXUS_USER_PASS"
