@@ -1,4 +1,13 @@
 #!/bin/bash
+#
+# Simple utility to replicate all received files from one (local) nexus instance to another (remote).
+# 2016 (C) Petr Kozelka
+#
+
+#
+# Usage in cron job:
+# 1 * * * * cd /sonatype-work/storage && ~/bin/sync-dir-to-nexus.sh --dir $PWD/releases --url https://nexus.cz.infra/nexus/service/local/repositories/releases/content >releases/.console.txt 2>&1
+#
 
 # Defaults for parameters
 NEXUS_USER_PASS="deployment:deployment123"
