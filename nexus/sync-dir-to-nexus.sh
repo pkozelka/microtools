@@ -6,7 +6,7 @@
 
 #
 # Usage in cron job:
-# 1 * * * * cd /sonatype-work/storage && ~/bin/sync-dir-to-nexus.sh --dir $PWD/releases --url https://nexus.cz.infra/nexus/service/local/repositories/releases/content >releases/.console.txt 2>&1
+# 1 * * * * while true; do cd /sonatype-work/storage && ~/bin/sync-dir-to-nexus.sh --dir $PWD/releases --url https://nexus.cz.infra/nexus/service/local/repositories/releases/content >releases/.console.txt 2>&1; done
 #
 
 # Defaults for parameters
@@ -29,7 +29,7 @@ function monitorDirectory() {
 		-e close_write,delete,moved_to,moved_from \
 		--format '%e %w%f' \
 		@$LOGFILE \
-		"$LOCAL_DIR"
+		"$LOCAL_DIR" "$MYSELF"
 }
 
 function nexusCurl() {
@@ -47,7 +47,7 @@ function nexusCurl() {
 		return 0
 		;;
 	*)
-		echo "$actionCode $http_code !$uri" >&2
+		echo "ERROR: $actionCode $http_code $uri" >&2
 		cat "$LOCAL_DIR/.curl" >&2
 		return 1
 		;;
@@ -61,6 +61,10 @@ function syncToNexus() {
 		case "$filename" in
 		"$LOGFILE") continue;;
 		"$LOCAL_DIR/."*) continue;;
+		"$MYSELF")
+			printf "WARNING: Script changed (%s), aborting\n" $(md5sum "$MYSELF" | cut -f1 -d' ') >&2
+			kill $$
+			exit 0;;
 #		*'.md5'|*'.sha1') continue;;
 #		*'/maven-metadata.xml') continue;;
 		esac
@@ -123,6 +127,8 @@ done
 # DO NOT RUN TWICE on the same dir
 checkSingletonLock || exit 1
 #
+
+MYSELF="$0"
 
 LOGFILE="$LOCAL_DIR/.nexus-sync.log"
 CURL="curl -u $NEXUS_USER_PASS"
