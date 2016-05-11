@@ -26,7 +26,7 @@ function resyncDirectory() {
 
 function monitorDirectory() {
 	inotifywait -q -m -r \
-		-e close_write,delete \
+		-e close_write,delete,moved_to,moved_from \
 		--format '%e %w%f' \
 		@$LOGFILE \
 		"$LOCAL_DIR"
@@ -67,10 +67,10 @@ function syncToNexus() {
 		#
 		local uri=${filename:${#LOCAL_DIR}+1}
 		case "$events" in
-		'CLOSE_WRITE,CLOSE' | 'resync')
+		'CLOSE_WRITE,CLOSE' | 'MOVED_TO' | 'resync')
 			nexusCurl "A" "$uri" --upload-file "$filename" || continue
 			;;
-		'DELETE' | 'DELETE,ISDIR')
+		'DELETE' | 'DELETE,ISDIR' | 'MOVED_FROM')
 			nexusCurl "D" "$uri" -X DELETE || continue
 			;;
 		esac
