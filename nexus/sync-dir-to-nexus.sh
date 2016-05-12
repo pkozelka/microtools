@@ -9,11 +9,6 @@
 # 1 * * * * while true; do cd /sonatype-work/storage && ~/bin/sync-dir-to-nexus.sh --dir $PWD/releases --url https://nexus.cz.infra/nexus/service/local/repositories/releases/content >releases/.console.txt 2>&1; done
 #
 
-# Defaults for parameters
-NEXUS_USER_PASS="deployment:deployment123"
-NEXUS_CONTENT_URL="http://localhost:8081/service/local/repositories/releases/content"
-LOCAL_DIR="$PWD"
-#
 
 function log() {
 	echo "$@"
@@ -61,6 +56,10 @@ function syncToNexus() {
 		case "$filename" in
 		"$LOGFILE") continue;;
 		"$LOCAL_DIR/."*) continue;;
+		"$CONFIG")
+			printf "WARNING: Configuration changed (%s), aborting\n" $(md5sum "$CONFIG" | cut -f1 -d' ') >&2
+			kill $$
+			exit 0;;
 		"$MYSELF")
 			printf "WARNING: Script changed (%s), aborting\n" $(md5sum "$MYSELF" | cut -f1 -d' ') >&2
 			kill $$
@@ -105,12 +104,17 @@ while [ -n "$1" ]; do
 	local option="$1"
 	shift
 	case "$option" in
+	'--config')
+		CONFIG="$1"
+		shift
+		eval $(cat "$CONFIG") || return 1
+		;;
 	'--dir')
 		LOCAL_DIR="$1"
 		shift
 		;;
 	'--user')
-		NEXUS_USER_PASS=$1
+		CURL_AUTH="-u $1"
 		shift
 		;;
 	'--url')
@@ -130,15 +134,27 @@ checkSingletonLock || exit 1
 
 MYSELF="$0"
 
-LOGFILE="$LOCAL_DIR/.nexus-sync.log"
-CURL="curl -u $NEXUS_USER_PASS"
 case "$NEXUS_CONTENT_URL" in
 'https://'*) CURL="$CURL -k";;
 esac
+
+echo "Syncing $LOCAL_DIR to $NEXUS_CONTENT_URL"
 
 resyncDirectory | syncToNexus
 monitorDirectory | syncToNexus
 
 }
 
+# Configuration defaults
+CURL_AUTH="-u deployment:deployment123"
+NEXUS_CONTENT_URL="http://localhost:8081/service/local/repositories/releases/content"
+LOCAL_DIR="$PWD"
+
+# Override defaults with default configuration, if present
+CONFIG="$PWD/sync-dir-to-nexus.config"
+[ -s "$CONFIG" ] && eval $(cat "$CONFIG")
+[ -z "$LOGFILE"] && LOGFILE="$LOCAL_DIR/.nexus-sync.log"
+
+# globals
+CURL="curl $CURL_AUTH"
 doMain "$@"
