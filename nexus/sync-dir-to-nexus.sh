@@ -88,7 +88,7 @@ function checkSingletonLock() {
     [ -n "$pid" ] && procName=$(ps -p "$pid" -o comm=)
     if [ -n "$procName" ]; then
         # already running, cannot lock
-        echo "ERROR: already running with pid=$pid"
+        printf "%s ERROR: already running with pid=%s\n" "$(date --iso-8601=sec)" "$pid"
         return 1
     fi
     # lock
