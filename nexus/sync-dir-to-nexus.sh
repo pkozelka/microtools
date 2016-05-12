@@ -32,7 +32,7 @@ function nexusCurl() {
 	local uri=$2
 	shift 2
 	local http_code=$($CURL \
-		"$@" "$NEXUS_CONTENT_URL/$uri" \
+		"$@" "$REMOTE_URL/$uri" \
 		--output /dev/stderr --write-out "%{http_code}" \
 		-v 2>"$LOCAL_DIR/.curl"\
 		) || return 1
@@ -118,7 +118,7 @@ while [ -n "$1" ]; do
 		shift
 		;;
 	'--url')
-		NEXUS_CONTENT_URL=$1
+		REMOTE_URL=$1
 		shift
 		;;
 	'--'*)
@@ -134,11 +134,11 @@ checkSingletonLock || exit 1
 
 MYSELF="$0"
 
-case "$NEXUS_CONTENT_URL" in
+case "$REMOTE_URL" in
 'https://'*) CURL="$CURL -k";;
 esac
 
-echo "Syncing $LOCAL_DIR to $NEXUS_CONTENT_URL"
+echo "Syncing $LOCAL_DIR to $REMOTE_URL"
 
 resyncDirectory | syncToNexus
 monitorDirectory | syncToNexus
@@ -147,7 +147,7 @@ monitorDirectory | syncToNexus
 
 # Configuration defaults
 CURL_AUTH="-u deployment:deployment123"
-NEXUS_CONTENT_URL="http://localhost:8081/service/local/repositories/releases/content"
+REMOTE_URL="http://localhost:8081/service/local/repositories/releases/content"
 LOCAL_DIR="$PWD"
 
 # Override defaults with default configuration, if present
