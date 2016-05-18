@@ -15,11 +15,17 @@ function log() {
     echo "$@" >>$LOGFILE
 }
 
-function resyncDirectory() {
+##
+# Find files newer than last modification of the logfile
+#
+function findNewerFiles() {
     find $LOCAL_DIR/* -newer $LOGFILE -type f -printf 'resync %p\n'
 }
 
-function monitorDirectory() {
+##
+# Watch infinitely for changes in local directory
+#
+function watchLoop() {
     inotifywait -q -m -r \
       -e close_write,delete,moved_to,moved_from \
       --format '%e %w%f' \
@@ -138,10 +144,20 @@ function doMain() {
     esac
 
     echo "Syncing $LOCAL_DIR to $REMOTE_URL"
-
-    resyncDirectory | syncToNexus
-    monitorDirectory | syncToNexus
-
+    local commands="$*"
+    [ -z "$commands" ] && commands="syncNewer watch"
+		local command
+    for command in $commands; do
+        case "$1" in
+        'findNewer')
+            findNewerFiles | syncToNexus
+            ;;
+        'watch')
+            watchLoop | syncToNexus
+            ;;
+        esac
+    done
+    return 0
 }
 
 # Configuration defaults
