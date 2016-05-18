@@ -11,73 +11,73 @@
 
 
 function log() {
-	echo "$@"
-	echo "$@" >>$LOGFILE
+    echo "$@"
+    echo "$@" >>$LOGFILE
 }
 
 function resyncDirectory() {
-	find $LOCAL_DIR/* -newer $LOGFILE -type f -printf 'resync %p\n'
+    find $LOCAL_DIR/* -newer $LOGFILE -type f -printf 'resync %p\n'
 }
 
 function monitorDirectory() {
-	inotifywait -q -m -r \
-		-e close_write,delete,moved_to,moved_from \
-		--format '%e %w%f' \
-		@$LOGFILE \
-		"$LOCAL_DIR" "$MYSELF"
+    inotifywait -q -m -r \
+      -e close_write,delete,moved_to,moved_from \
+      --format '%e %w%f' \
+      @$LOGFILE \
+      "$LOCAL_DIR" "$MYSELF"
 }
 
 function nexusCurl() {
-	local actionCode=$1
-	local uri=$2
-	shift 2
-	local http_code=$($CURL \
-		"$@" "$REMOTE_URL/$uri" \
-		--output /dev/stderr --write-out "%{http_code}" \
-		-v 2>"$LOCAL_DIR/.curl"\
-		) || return 1
-	case "$http_code" in
-	2??)
-		log "$actionCode $http_code $uri"
-		return 0
-		;;
-	*)
-		echo "ERROR: $actionCode $http_code $uri" >&2
-		cat "$LOCAL_DIR/.curl" >&2
-		return 1
-		;;
-	esac
+    local actionCode=$1
+    local uri=$2
+    shift 2
+    local http_code=$($CURL \
+      "$@" "$REMOTE_URL/$uri" \
+      --output /dev/stderr --write-out "%{http_code}" \
+      -v 2>"$LOCAL_DIR/.curl"\
+      ) || return 1
+    case "$http_code" in
+    2??)
+        log "$actionCode $http_code $uri"
+        return 0
+        ;;
+    *)
+        echo "ERROR: $actionCode $http_code $uri" >&2
+        cat "$LOCAL_DIR/.curl" >&2
+        return 1
+        ;;
+    esac
 }
 
 function syncToNexus() {
-	local events filename
-	while read events filename; do
-		# inotify exclusion doesn't seem to work
-		case "$filename" in
-		"$LOGFILE") continue;;
-		"$LOCAL_DIR/."*) continue;;
-		"$CONFIG")
-			printf "WARNING: Configuration changed (%s), aborting\n" $(md5sum "$CONFIG" | cut -f1 -d' ') >&2
-			kill $$
-			exit 0;;
-		"$MYSELF")
-			printf "WARNING: Script changed (%s), aborting\n" $(md5sum "$MYSELF" | cut -f1 -d' ') >&2
-			kill $$
-			exit 0;;
-#		*'.md5'|*'.sha1') continue;;
-#		*'/maven-metadata.xml') continue;;
-		esac
-		#
-		local uri=${filename:${#LOCAL_DIR}+1}
-		case "$events" in
-		'CLOSE_WRITE,CLOSE' | 'MOVED_TO' | 'resync')
-			nexusCurl "A" "$uri" --upload-file "$filename" || continue
-			;;
-		'DELETE' | 'DELETE,ISDIR' | 'MOVED_FROM')
-			nexusCurl "D" "$uri" -X DELETE || continue
-			;;
-		esac
-	done
+    local events filename
+    while read events filename; do
+        # inotify exclusion doesn't seem to work
+        case "$filename" in
+        "$LOGFILE") continue;;
+        "$LOCAL_DIR/."*) continue;;
+        "$CONFIG")
+            printf "WARNING: Configuration changed (%s), aborting\n" $(md5sum "$CONFIG" | cut -f1 -d' ') >&2
+            kill $$
+            exit 0;;
+        "$MYSELF")
+            printf "WARNING: Script changed (%s), aborting\n" $(md5sum "$MYSELF" | cut -f1 -d' ') >&2
+            kill $$
+            exit 0;;
+#        *'.md5'|*'.sha1') continue;;
+#        *'/maven-metadata.xml') continue;;
+        esac
+        #
+        local uri=${filename:${#LOCAL_DIR}+1}
+        case "$events" in
+        'CLOSE_WRITE,CLOSE' | 'MOVED_TO' | 'resync')
+            nexusCurl "A" "$uri" --upload-file "$filename" || continue
+            ;;
+        'DELETE' | 'DELETE,ISDIR' | 'MOVED_FROM')
+            nexusCurl "D" "$uri" -X DELETE || continue
+            ;;
+        esac
+    done
 }
 
 function checkSingletonLock() {
@@ -98,50 +98,49 @@ function checkSingletonLock() {
 #### MAIN
 
 function doMain() {
-# parse options
+    # parse options
+    while [ -n "$1" ]; do
+        local option="$1"
+        shift
+        case "$option" in
+        '--config')
+            CONFIG="$1"
+            shift
+            eval $(cat "$CONFIG") || return 1
+            ;;
+        '--dir')
+            LOCAL_DIR="$1"
+            shift
+            ;;
+        '--user')
+            CURL_AUTH="-u $1"
+            shift
+            ;;
+        '--url')
+            REMOTE_URL=$1
+            shift
+            ;;
+        '--'*)
+            echo "ERROR: Unknown option: $option" >&2
+            ;;
+        *) break;;
+        esac
+    done
 
-while [ -n "$1" ]; do
-	local option="$1"
-	shift
-	case "$option" in
-	'--config')
-		CONFIG="$1"
-		shift
-		eval $(cat "$CONFIG") || return 1
-		;;
-	'--dir')
-		LOCAL_DIR="$1"
-		shift
-		;;
-	'--user')
-		CURL_AUTH="-u $1"
-		shift
-		;;
-	'--url')
-		REMOTE_URL=$1
-		shift
-		;;
-	'--'*)
-		echo "ERROR: Unknown option: $option" >&2
-		;;
-	*) break;;
-	esac
-done
+    # DO NOT RUN TWICE on the same dir
+    checkSingletonLock || exit 1
+    #
 
-# DO NOT RUN TWICE on the same dir
-checkSingletonLock || exit 1
-#
+    MYSELF="$0"
 
-MYSELF="$0"
+    case "$REMOTE_URL" in
+    'https://'*) CURL="$CURL -k";;
+    esac
 
-case "$REMOTE_URL" in
-'https://'*) CURL="$CURL -k";;
-esac
+    echo "Syncing $LOCAL_DIR to $REMOTE_URL"
 
-echo "Syncing $LOCAL_DIR to $REMOTE_URL"
-
-resyncDirectory | syncToNexus
-monitorDirectory | syncToNexus
+    resyncDirectory | syncToNexus
+    monitorDirectory | syncToNexus
 
 }
 
