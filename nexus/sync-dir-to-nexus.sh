@@ -133,10 +133,6 @@ function doMain() {
         esac
     done
 
-    # DO NOT RUN TWICE on the same dir
-    checkSingletonLock || exit 1
-    #
-
     MYSELF="$0"
 
     case "$REMOTE_URL" in
@@ -145,12 +141,15 @@ function doMain() {
 
     echo "Syncing $LOCAL_DIR to $REMOTE_URL"
     local commands="$*"
-    [ -z "$commands" ] && commands="syncNewer watch"
-		local command
+    [ -z "$commands" ] && commands="syncNewer lock watch"
+    local command
     for command in $commands; do
         case "$1" in
         'findNewer')
             findNewerFiles | syncToNexus
+            ;;
+        'lock') # DO NOT RUN TWICE on the same dir
+            checkSingletonLock || return 1
             ;;
         'watch')
             watchLoop | syncToNexus
