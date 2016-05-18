@@ -23,6 +23,17 @@ function findNewerFiles() {
 }
 
 ##
+# Verify recently created files by contacting remote party
+#
+function verifyRecent() {
+    local minutes="${1-'60'}"
+    touch "$LOCAL_DIR/.verified"
+    find $LOCAL_DIR/* -ctime "-${minutes}" -type f -printf '%P\n' | while read uri; do
+        verifyUri "$uri"
+    done
+}
+
+##
 # Watch infinitely for changes in local directory
 #
 function watchLoop() {
@@ -33,15 +44,44 @@ function watchLoop() {
       "$LOCAL_DIR" "$MYSELF"
 }
 
+##
+# Verifies that given file is really uploaded by querying the remote side.
+# Files that were once verified will not be verified again.
+#
+function verifyUri() {
+    local uri="$1"
+    shift
+
+    # remote verification is expensive - do not do that twice
+    grep -q '^'"$uri"'$' "$LOCAL_DIR/.verified" && return 0
+
+    # not yet verified
+    local http_code=$($CURL -L --head \
+      "$@" "$REMOTE_URL/$uri" \
+      -s --output "$LOCAL_DIR/.head.curl"
+      --write-out "%{http_code}" \
+      2>/dev/null) || return 1
+    case "$http_code" in
+    4??) # NOT FOUND
+        nexusCurl "A" "$uri" --upload-file "$filename";;
+    2??);; # FOUND
+    *) # other / problem
+        echo "$http_code $uri" >&2
+        return 1;;
+    esac
+    echo "$uri" >>"$LOCAL_DIR/.verified"
+    return 0
+}
+
 function nexusCurl() {
     local actionCode=$1
     local uri=$2
     shift 2
     local http_code=$($CURL \
       "$@" "$REMOTE_URL/$uri" \
-      --output /dev/stderr --write-out "%{http_code}" \
-      -v 2>"$LOCAL_DIR/.curl"\
-      ) || return 1
+      -v --output "$LOCAL_DIR/.curl" \
+      --write-out "%{http_code}" \
+      2>/dev/null) || return 1
     case "$http_code" in
     2??)
         log "$actionCode $http_code $uri"
@@ -141,12 +181,15 @@ function doMain() {
 
     echo "Syncing $LOCAL_DIR to $REMOTE_URL"
     local commands="$*"
-    [ -z "$commands" ] && commands="syncNewer lock watch"
+    [ -z "$commands" ] && commands="syncNewer verifyRecent lock watch"
     local command
     for command in $commands; do
         case "$1" in
         'findNewer')
             findNewerFiles | syncToNexus
+            ;;
+        'verifyRecent')
+            verifyRecent "60"
             ;;
         'lock') # DO NOT RUN TWICE on the same dir
             checkSingletonLock || return 1
