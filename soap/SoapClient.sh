@@ -95,5 +95,6 @@ function SoapClient() {
         CMD_$command "$@"
     else
         echo "ERROR: Invalid command: '$command'; use $0 --help to see available commands" >&2
+        return 1
     fi
 }
