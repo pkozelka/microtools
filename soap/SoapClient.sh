@@ -3,8 +3,19 @@
 # Commandline client for SOAP Web Services
 # Petr Kozelka (C) 2016
 #
-
+# Embedding into wrappers scripts:
+#   [ -s SoapClient.sh ] || wget --progress=dot:mega -P "$TMP" -N "https://raw.githubusercontent.com/pkozelka/microtools/master/soap/SoapClient.sh" || exit 1
+#   chmod +x "SoapClient.sh" && source "./SoapClient.sh"
+#   SoapClient "$@"
+#
 [ -s "SoapClient.config" ] && source "SoapClient.config"
+
+function SoapCall() {
+    local operationName="$1"
+    shift
+    #TODO: finetune processing of both request and response
+    SOAP_${operationName}Request "$@" | $CURL_POST -d@-
+}
 
 function SoapClient_help() {
     cat <<EOF
@@ -60,6 +71,11 @@ function SoapClient() {
         esac
     done
 
+    if [ -z "$REMOTE_URL" ]; then
+        echo "ERROR: Missing REMOTE_URL - use either config property 'REMOTE_URL' or argument '--url'"
+        return 1
+    fi
+
     CURL_GET="curl -s -k ${CURL_AUTH} ${REMOTE_URL}${ENDPOINT_URI}"
     CURL_POST="curl -s -k --header Content-Type:text/xml;charset=UTF-8 -X POST ${CURL_AUTH} ${REMOTE_URL}${ENDPOINT_URI}"
 
@@ -74,17 +90,10 @@ function SoapClient() {
     if [ "$command" == "-" ]; then
         # absorb stdin and pass it to the endpoint
         $CURL_POST -d@-
-    elif grep -q '^function CMD_'$command'()' "$0"; then
+    elif grep -q "^function CMD_$command()" "$0"; then
         # execute the recognized subcommand by calling its function
         CMD_$command "$@"
     else
         echo "ERROR: Invalid command: '$command'; use $0 --help to see available commands" >&2
     fi
-}
-
-function SoapCall() {
-    local operationName="$1"
-    shift
-    #TODO: finetune processing of both request and response
-    SOAP_${operationName}Request "$@" | $CURL_POST -d@-
 }

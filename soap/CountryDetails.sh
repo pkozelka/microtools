@@ -55,5 +55,6 @@ function CMD_isd() {
     SoapCall GetISD "$@"
 }
 
-source "./SoapClient.sh"
+[ -s SoapClient.sh ] || wget --progress=dot:mega -P "$TMP" -N "https://raw.githubusercontent.com/pkozelka/microtools/master/soap/SoapClient.sh" || exit 1
+chmod +x "SoapClient.sh" && source "./SoapClient.sh"
 SoapClient "$@"
