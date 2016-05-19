@@ -12,7 +12,7 @@ Commandline client for SOAP Web Services
 (C) 2016, Petr Kozelka
 
 Usage:
-    $0 [<options>] command
+    $0 [<options>] <subcommand>
 
 Options:
     --config
@@ -24,16 +24,9 @@ Options:
     --wsdl  just show wsdl and exit
     -       absorb stdin as is and pass it to the endpoint
 
-Commands (generated from CMD_* functions in main script):
+Subcommands (generated from CMD_* functions in main script):
 EOF
     sed -n '/^function CMD_/{s:^.*CMD_:    :;s:().*$::;p;}' "$0"
-}
-
-function SoapCall() {
-    local operationName="$1"
-    shift
-    #TODO: finetune processing of both request and response
-    SOAP_${operationName}Request "$@" | $CURL_POST -d@-
 }
 
 function SoapClient() {
@@ -75,7 +68,7 @@ function SoapClient() {
         return 0
     fi
 
-    local command="$1"
+    local command="${1?'Please specify a subcommand; use --help option to list available subcommands'}"
     shift
 
     if [ "$command" == "-" ]; then
@@ -87,4 +80,11 @@ function SoapClient() {
     else
         echo "ERROR: Invalid command: '$command'; use $0 --help to see available commands" >&2
     fi
+}
+
+function SoapCall() {
+    local operationName="$1"
+    shift
+    #TODO: finetune processing of both request and response
+    SOAP_${operationName}Request "$@" | $CURL_POST -d@-
 }
