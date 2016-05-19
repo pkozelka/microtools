@@ -22,6 +22,7 @@ Options:
     --user <name>:<password>
             sets basic authentication for the web service call
     --wsdl  just show wsdl and exit
+    -       absorb stdin as is and pass it to the endpoint
 
 Commands (generated from CMD_* functions in main script):
 EOF
@@ -76,8 +77,12 @@ function SoapClient() {
 
     local command="$1"
     shift
-    # locate and execute the command
-    if grep -q '^function CMD_'$command'()' "$0"; then
+
+    if [ "$command" == "-" ]; then
+        # absorb stdin and pass it to the endpoint
+        $CURL_POST -d@-
+    elif grep -q '^function CMD_'$command'()' "$0"; then
+        # execute the recognized subcommand by calling its function
         CMD_$command "$@"
     else
         echo "ERROR: Invalid command: '$command'; use $0 --help to see available commands" >&2
