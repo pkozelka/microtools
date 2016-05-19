@@ -6,6 +6,28 @@
 
 [ -s "SoapClient.config" ] && source "SoapClient.config"
 
+function SoapClient_help() {
+    cat <<EOF
+Commandline client for SOAP Web Services
+(C) 2016, Petr Kozelka
+
+Usage:
+    $0 [<options>] command
+
+Options:
+    --config
+            reads configuration file
+    --url <url>
+            sets URL base for the endpoint
+    --user <name>:<password>
+            sets basic authentication for the web service call
+    --wsdl  just show wsdl and exit
+
+Commands (generated from CMD_* functions in main script):
+EOF
+    sed -n '/^function CMD_/{s:^.*CMD_:    :;s:().*$::;p;}' "$0"
+}
+
 function SoapClient() {
     local showWsdl="false"
     while [ "${1:0:2}" == "--" ]; do
@@ -28,6 +50,10 @@ function SoapClient() {
             # show WSDL and exit
             showWsdl="true"
             shift;;
+        '--help')
+            # print usage information
+            SoapClient_help "$@"
+            return 0;;
         *) echo "ERROR: Invalid option: $option" >&2
             return 1;;
         esac
@@ -39,5 +65,14 @@ function SoapClient() {
     if $showWsdl; then
         ${CURL_GET}${ENDPOINT_WSDL} | xmllint --format - || exit 1
         return 0
+    fi
+
+    local command="$1"
+    shift
+    # locate and execute the command
+    if grep -q '^function CMD_'$command'()' "$0"; then
+        CMD_$command "$@"
+    else
+        echo "ERROR: Invalid command: '$command'; use $0 --help to see available commands" >&2
     fi
 }
