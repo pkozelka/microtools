@@ -28,6 +28,13 @@ EOF
     sed -n '/^function CMD_/{s:^.*CMD_:    :;s:().*$::;p;}' "$0"
 }
 
+function SoapCall() {
+    local operationName="$1"
+    shift
+    #TODO: finetune processing of both request and response
+    SOAP_${operationName}Request "$@" | $CURL_POST -d@-
+}
+
 function SoapClient() {
     local showWsdl="false"
     while [ "${1:0:2}" == "--" ]; do

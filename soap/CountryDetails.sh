@@ -44,15 +44,15 @@ EOF
 }
 
 function CMD_countries() {
-    SOAP_GetCountriesRequest | $CURL_POST -d@-
+    SoapCall GetCountries "$@"
 }
 
 function CMD_country() {
-    SOAP_GetCountryByCountryCodeRequest "$@" | $CURL_POST -d@-
+    SoapCall GetCountryByCountryCode "$@"
 }
 
 function CMD_isd() {
-    SOAP_GetISDRequest "$@" | $CURL_POST -d@-
+    SoapCall GetISD "$@"
 }
 
 source "./SoapClient.sh"
