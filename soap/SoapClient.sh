@@ -14,7 +14,15 @@ function SoapCall() {
     local operationName="$1"
     shift
     #TODO: finetune processing of both request and response
-    SOAP_${operationName}Request "$@" | $CURL_POST -d@-
+    case "$DEBUG" in
+    '' | 'false')
+        SOAP_${operationName}Request "$@" | $CURL_POST -d@-
+        ;;
+    'true')
+        # just show the request on console
+        SOAP_${operationName}Request "$@"
+        ;;
+    esac
 }
 
 function SoapClient_help() {
@@ -81,6 +89,9 @@ function SoapClient() {
             # show WSDL and exit
             showWsdl="true"
             shift;;
+        '--debug')
+            DEBUG="true"
+            ;;
         '--help')
             # print usage information
             SoapClient_help "$@"
