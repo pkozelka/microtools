@@ -40,6 +40,25 @@ EOF
     sed -n '/^function CMD_/{s:^.*CMD_:    :;s:().*$::;p;}' "$0"
 }
 
+##
+# The standard wrapping for request body - soap envelope
+#
+function SoapEnvelope() {
+    cat <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
+  <Header/>
+  <Body>
+EOF
+    # pass the body through
+    cat
+    #
+    cat <<EOF
+  </Body>
+</Envelope>
+EOF
+}
+
 function SoapClient() {
     local showWsdl="false"
     while [ "${1:0:2}" == "--" ]; do

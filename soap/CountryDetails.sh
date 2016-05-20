@@ -5,13 +5,8 @@ ENDPOINT_URI="/country.asmx"
 ENDPOINT_WSDL="?WSDL"
 
 function SOAP_GetCountriesRequest() {
-    cat <<EOF
-<?xml version="1.0" encoding="utf-8"?>
-<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-  <soap:Body>
+    SoapEnvelope <<EOF
     <GetCountries xmlns="http://www.webserviceX.NET" />
-  </soap:Body>
-</soap:Envelope>
 EOF
 }
 
