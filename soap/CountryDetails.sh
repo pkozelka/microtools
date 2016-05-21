@@ -1,9 +1,31 @@
 #!/bin/bash
+#
+# Implements a public web service described at http://www.webservicex.net/country.asmx
+#
+# Demonstrates usage of the SoapClient.sh script.
+#
+# (C) 2016 Petr Kozelka <pkozelka@gmail.com>
+#
 
 REMOTE_URL="http://www.webservicex.net"
 ENDPOINT_URI="/country.asmx"
 ENDPOINT_WSDL="?WSDL"
 ENDPOINT_NAMESPACE="http://www.webserviceX.NET"
+
+##
+# Show currency for given country name.
+# Sample usage:
+#   ./CountryDetails.sh currency "czech republic"
+#
+# This implementation demonstrates usage of function "SoapRequest" which conveniently
+# wraps the payload data with SOAP Envelope/Body AND the operation element.
+#
+function SOAP_GetCurrencyByCountryRequest() {
+    local countryName="$1"
+    SoapRequest --element "GetCurrencyByCountry" <<EOF
+    <CountryName>${countryName}</CountryName>
+EOF
+}
 
 ##
 # Shows all countries.
@@ -19,6 +41,8 @@ function SOAP_GetCountriesRequest() {
 
 ##
 # Shows one country selected by country code
+# Sample usage:
+#   ./CountryDetails.sh country cz
 #
 # This implementation demonstrates usage of function "SoapEnvelope" which conveniently
 # wraps the message with SOAP Envelope/Body stuff.
@@ -37,7 +61,7 @@ EOF
 ##
 # Show ISD for given country.
 # Sample usage:
-#   ./CountryDetails.sh isd italy
+#   ./CountryDetails.sh isd "czech republic"
 #
 # This implementation demonstrates complete control over transmitted SOAP message.
 #
@@ -61,6 +85,10 @@ function CMD_countries() {
 
 function CMD_country() {
     SoapCall GetCountryByCountryCode "$@"
+}
+
+function CMD_currency() {
+    SoapCall GetCurrencyByCountry "$@"
 }
 
 function CMD_isd() {

@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Commandline client for SOAP Web Services
-# Petr Kozelka (C) 2016
+# (C) 2016 Petr Kozelka <pkozelka@gmail.com>
 #
 # Embedding into wrappers scripts:
 #   [ -s SoapClient.sh ] || wget --progress=dot:mega -P "$TMP" -N "https://raw.githubusercontent.com/pkozelka/microtools/master/soap/SoapClient.sh" || exit 1
@@ -11,9 +11,10 @@
 [ -s "SoapClient.config" ] && source "SoapClient.config"
 
 function SoapCall() {
-    local operationName="$1"
+    local operationName="${1?'Please specify SOAP operation to call'}"
     shift
     #TODO: finetune processing of both request and response
+    SOAP_OPERATION="$operationName"
     case "$DEBUG" in
     '' | 'false')
         SOAP_${operationName}Request "$@" | $CURL_POST -d@-
@@ -23,6 +24,9 @@ function SoapCall() {
         SOAP_${operationName}Request "$@"
         ;;
     esac
+    local rv="$?"
+    SOAP_OPERATION=""
+    return "$rv"
 }
 
 function SoapClient_help() {
@@ -49,7 +53,7 @@ EOF
 }
 
 ##
-# The standard wrapping for request body - soap envelope
+# Standard wrapping for request body - soap envelope
 #
 function SoapEnvelope() {
     #TODO: allow headers to come via options?
@@ -60,14 +64,39 @@ function SoapEnvelope() {
   <Header/>
   <Body>
 EOF
-    if [ -t 1 ]; then
-        # pass the body through
+    if [ -t 1 ]; then # pass the body through
         cat
-    else
-        # trivial body can be passed as an argument
+    else # trivial body can be passed as an argument
         echo "    ${soapMessage}"
     fi
     cat <<EOF
+  </Body>
+</Envelope>
+EOF
+}
+
+function SoapRequest() {
+    local requestElement="${SOAP_OPERATION?'No soap operation in progress!'}Request"
+    if [ "$1" == "--element" ]; then
+        requestElement="${2}"
+        shift 2
+    fi
+    #TODO: allow headers to come via options?
+    local payload="$1"
+    cat <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
+  <Header/>
+  <Body>
+    <$requestElement xmlns="$ENDPOINT_NAMESPACE">
+EOF
+    if [ -z "$payload" ]; then # pass the payload through
+        cat
+    else # trivial payload can be passed as an argument
+        echo "      ${payload}"
+    fi
+    cat <<EOF
+    </$requestElement>
   </Body>
 </Envelope>
 EOF
