@@ -13,6 +13,16 @@ ENDPOINT_WSDL="?WSDL"
 ENDPOINT_NAMESPACE="http://www.webserviceX.NET"
 
 ##
+# Show time zone for given country.
+# Sample usage:
+#   ./CountryDetails.sh gmt "czech republic"
+#
+function SOAP_GetGMTbyCountryRequest() {
+    local countryName="$1"
+    SoapRequest --element "GetGMTbyCountry" "<CountryName>${countryName}</CountryName>"
+}
+
+##
 # Show currency for given country name.
 # Sample usage:
 #   ./CountryDetails.sh currency "czech republic"
@@ -95,6 +105,10 @@ function CMD_isd() {
     SoapCall GetISD "$@"
 }
 
-[ -s SoapClient.sh ] || wget --progress=dot:mega -P "$TMP" -N "https://raw.githubusercontent.com/pkozelka/microtools/master/soap/SoapClient.sh" || exit 1
+function CMD_gmt() {
+    SoapCall GetGMTbyCountry "$@"
+}
+
+[ -s SoapClient.sh ] || wget --progress=dot:mega -N "https://raw.githubusercontent.com/pkozelka/microtools/master/soap/SoapClient.sh" || exit 1
 chmod +x "SoapClient.sh" && source "./SoapClient.sh"
 SoapClient "$@"

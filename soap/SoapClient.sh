@@ -4,7 +4,7 @@
 # (C) 2016 Petr Kozelka <pkozelka@gmail.com>
 #
 # Embedding into wrappers scripts:
-#   [ -s SoapClient.sh ] || wget --progress=dot:mega -P "$TMP" -N "https://raw.githubusercontent.com/pkozelka/microtools/master/soap/SoapClient.sh" || exit 1
+#   [ -s SoapClient.sh ] || wget --progress=dot:mega -N "https://raw.githubusercontent.com/pkozelka/microtools/master/soap/SoapClient.sh" || exit 1
 #   chmod +x "SoapClient.sh" && source "./SoapClient.sh"
 #   SoapClient "$@"
 #
