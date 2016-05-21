@@ -52,15 +52,21 @@ EOF
 # The standard wrapping for request body - soap envelope
 #
 function SoapEnvelope() {
+    #TODO: allow headers to come via options?
+    local soapMessage="$1"
     cat <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
   <Header/>
   <Body>
 EOF
-    # pass the body through
-    cat
-    #
+    if [ -t 1 ]; then
+        # pass the body through
+        cat
+    else
+        # trivial body can be passed as an argument
+        echo "    ${soapMessage}"
+    fi
     cat <<EOF
   </Body>
 </Envelope>
@@ -91,6 +97,7 @@ function SoapClient() {
             shift;;
         '--debug')
             DEBUG="true"
+            echo "!!! DEBUG MODE !!!" >&2
             ;;
         '--help')
             # print usage information

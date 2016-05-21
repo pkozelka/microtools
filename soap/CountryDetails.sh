@@ -3,34 +3,51 @@
 REMOTE_URL="http://www.webservicex.net"
 ENDPOINT_URI="/country.asmx"
 ENDPOINT_WSDL="?WSDL"
+ENDPOINT_NAMESPACE="http://www.webserviceX.NET"
 
+##
+# Shows all countries.
+#
+# This implementation demonstrates usage of function "SoapEnvelope" which conveniently
+# wraps the message with SOAP Envelope/Body stuff.
+#
+# Here we feed the data to SoapEnvelope via function argument.
+#
 function SOAP_GetCountriesRequest() {
-    SoapEnvelope <<EOF
-    <GetCountries xmlns="http://www.webserviceX.NET" />
-EOF
+    SoapEnvelope "<GetCountries xmlns='$ENDPOINT_NAMESPACE' />"
 }
 
+##
+# Shows one country selected by country code
+#
+# This implementation demonstrates usage of function "SoapEnvelope" which conveniently
+# wraps the message with SOAP Envelope/Body stuff.
+#
+# Here we feed the data to SoapEnvelope via pipe.
+#
 function SOAP_GetCountryByCountryCodeRequest() {
     local countryCode="$1"
-    cat <<EOF
-<?xml version="1.0" encoding="utf-8"?>
-<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-  <soap:Body>
-    <GetCountryByCountryCode xmlns="http://www.webserviceX.NET">
+    SoapEnvelope <<EOF
+    <GetCountryByCountryCode xmlns="$ENDPOINT_NAMESPACE">
       <CountryCode>${countryCode}</CountryCode>
     </GetCountryByCountryCode>
-  </soap:Body>
-</soap:Envelope>
 EOF
 }
 
+##
+# Show ISD for given country.
+# Sample usage:
+#   ./CountryDetails.sh isd italy
+#
+# This implementation demonstrates complete control over transmitted SOAP message.
+#
 function SOAP_GetISDRequest() {
     local countryName="$1"
     cat <<EOF
 <?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
-    <GetISD xmlns="http://www.webserviceX.NET">
+    <GetISD xmlns="$ENDPOINT_NAMESPACE">
       <CountryName>${countryName}</CountryName>
     </GetISD>
   </soap:Body>
