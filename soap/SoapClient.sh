@@ -25,10 +25,55 @@ function SoapCall() {
             echo "ERROR: failed to execute '$soapRequestFunction'" >&2
             return 1
         fi
-        $CURL "-d@$TMP/${operationName}.request" >"$TMP/${operationName}.response"
+        local http_code=$($CURL "-d@$TMP/${operationName}.request" --output "$TMP/${operationName}.response" --write-out "%{http_code}")
+        local rv="$?"
+        case "$rv" in
+        0);;
+        *) echo "ERROR: cannot execute curl - exit code is" >&2;return 1;;
+        esac
+
+        xsltproc --output "$TMP/${operationName}.payload" - "$TMP/${operationName}.response" <<"EOF" || return 1
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" version="1.0">
+    <xsl:output method="xml" indent="yes"/>
+    <xsl:template match="env:Envelope">
+        <xsl:apply-templates select="env:*"/>
+    </xsl:template>
+    <xsl:template match="env:Body">
+        <xsl:apply-templates select="env:Fault"/>
+        <xsl:apply-templates select="*" mode="iden"/>
+    </xsl:template>
+    <xsl:template match="env:Fault">
+        <xsl:message terminate="yes">
+            <xsl:text>SOAP Fault: faultcode="</xsl:text>
+            <xsl:value-of select="faultcode"/>
+            <xsl:text>", message="</xsl:text>
+            <xsl:value-of select="faultstring"/>
+            <xsl:text>", detail="</xsl:text>
+            <xsl:value-of select="detail"/>
+            <xsl:text>"</xsl:text>
+        </xsl:message>
+    </xsl:template>
+
+    <!-- identity transform -->
+    <xsl:template match="@*|text()|comment()|processing-instruction()" mode="iden">
+        <xsl:copy-of select="."/>
+    </xsl:template>
+    <xsl:template match="*" mode="iden">
+        <xsl:copy>
+            <xsl:apply-templates select="@*" mode="iden"/>
+            <xsl:apply-templates select="*|processing-instruction()|comment()|text()" mode="iden"/>
+        </xsl:copy>
+    </xsl:template>
+</xsl:stylesheet>
+EOF
+        case "$http_code" in
+        2??);;
+        *) echo "ERROR: server returned HTTP $http_code" >&2;return 1;;
+        esac
 
         type -t "$soapResponseFunction" || soapResponseFunction="cat"
-        $soapResponseFunction < "$TMP/${operationName}.response"
+        eval $soapResponseFunction < "$TMP/${operationName}.payload"
     fi
     local rv="$?"
     SOAP_OPERATION=""
@@ -93,13 +138,18 @@ function SoapRequest() {
 <Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
   <Header/>
   <Body>
-    <$requestElement xmlns="$ENDPOINT_NAMESPACE">
 EOF
-    # pass the body through
-    cat
-    #
+    if read; then
+        echo "    <$requestElement xmlns=\"$ENDPOINT_NAMESPACE\">"
+        # pass the body through
+        echo "$REPLY"
+        cat
+        #
+        echo "    </$requestElement>"
+    else
+        echo "    <$requestElement xmlns=\"$ENDPOINT_NAMESPACE\"/>"
+    fi
     cat <<EOF
-    </$requestElement>
   </Body>
 </Envelope>
 EOF
