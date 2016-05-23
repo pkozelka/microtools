@@ -16,15 +16,19 @@ function SoapCall() {
     #TODO: finetune processing of both request and response
     SOAP_OPERATION="$operationName"
     local soapRequestFunction="SOAP_${operationName}Request"
+    local soapResponseFunction="SOAP_${operationName}Response"
     if "$DEBUG"; then
         # just show the request on console
         $soapRequestFunction "$@"
     else
-        if ! $soapRequestFunction "$@" >/tmp/$operationName; then
+        if ! $soapRequestFunction "$@" >$TMP/${operationName}.request; then
             echo "ERROR: failed to execute '$soapRequestFunction'" >&2
             return 1
         fi
-        $CURL "-d@/tmp/$operationName"
+        $CURL "-d@$TMP/${operationName}.request" >"$TMP/${operationName}.response"
+
+        type -t "$soapResponseFunction" || soapResponseFunction="cat"
+        $soapResponseFunction < "$TMP/${operationName}.response"
     fi
     local rv="$?"
     SOAP_OPERATION=""
@@ -74,6 +78,9 @@ EOF
 EOF
 }
 
+##
+# Wraps the payload with a SOAP request.
+#
 function SoapRequest() {
     local requestElement="${SOAP_OPERATION?'No soap operation in progress!'}Request"
     if [ "$1" == "--element" ]; then
@@ -96,6 +103,13 @@ EOF
   </Body>
 </Envelope>
 EOF
+}
+
+##
+# Unwraps payload from the SOAP response
+#
+function SoapResponse() {
+    cat ## TODO
 }
 
 function SoapClient() {
@@ -124,6 +138,10 @@ function SoapClient() {
             DEBUG="true"
             echo "!!! DEBUG MODE !!!" >&2
             ;;
+        '--tmp')
+            TMP="$1"
+            shift
+            ;;
         '--help')
             # print usage information
             SoapClient_help "$@"
@@ -149,6 +167,9 @@ function SoapClient() {
 
     local command="${1?'Please specify a subcommand; use --help option to list available subcommands'}"
     shift
+
+    [ -z "$TMP" ] && TMP="/tmp/SoapClient/${0/#*\/}"
+    mkdir -p "$TMP"
 
     if [ "$command" == "-" ]; then
         # absorb stdin and pass it to the endpoint
