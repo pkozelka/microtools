@@ -24,7 +24,7 @@ function SoapCall() {
             echo "ERROR: failed to execute '$soapRequestFunction'" >&2
             return 1
         fi
-        $CURL_POST "-d@/tmp/$operationName"
+        $CURL "-d@/tmp/$operationName"
     fi
     local rv="$?"
     SOAP_OPERATION=""
@@ -138,13 +138,12 @@ function SoapClient() {
         return 1
     fi
 
-    CURL_GET="curl -s -k ${CURL_AUTH} ${REMOTE_URL}${ENDPOINT_URI}"
-    CURL_POST="curl -s -k --header Content-Type:text/xml;charset=UTF-8 -X POST ${CURL_AUTH} ${REMOTE_URL}${ENDPOINT_URI}"
-
+    CURL="curl -s -k ${CURL_AUTH} ${REMOTE_URL}${ENDPOINT_URI}"
     if $showWsdl; then
         ${CURL_GET}${ENDPOINT_WSDL} | xmllint --format - || exit 1
         return 0
     fi
+    CURL="$CURL --header Content-Type:text/xml;charset=UTF-8 -X POST"
 
     [ "$DEBUG" == "true" ] || DEBUG="false"
 
@@ -153,7 +152,7 @@ function SoapClient() {
 
     if [ "$command" == "-" ]; then
         # absorb stdin and pass it to the endpoint
-        $DEBUG && echo "$CURL_POST -d@-" >&2
+        $DEBUG && echo "$CURL -d@-" >&2
         $CURL_POST -d@-
     elif grep -q "^function CMD_$command()" "$0"; then
         # execute the recognized subcommand by calling its function
