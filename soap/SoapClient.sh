@@ -15,15 +15,17 @@ function SoapCall() {
     shift
     #TODO: finetune processing of both request and response
     SOAP_OPERATION="$operationName"
-    case "$DEBUG" in
-    '' | 'false')
-        SOAP_${operationName}Request "$@" | $CURL_POST -d@-
-        ;;
-    'true')
+    local soapRequestFunction="SOAP_${operationName}Request"
+    if "$DEBUG"; then
         # just show the request on console
-        SOAP_${operationName}Request "$@"
-        ;;
-    esac
+        $soapRequestFunction "$@"
+    else
+        if ! $soapRequestFunction "$@" >/tmp/$operationName; then
+            echo "ERROR: failed to execute '$soapRequestFunction'" >&2
+            return 1
+        fi
+        $CURL_POST "-d@/tmp/$operationName"
+    fi
     local rv="$?"
     SOAP_OPERATION=""
     return "$rv"
@@ -57,18 +59,15 @@ EOF
 #
 function SoapEnvelope() {
     #TODO: allow headers to come via options?
-    local soapMessage="$1"
     cat <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
   <Header/>
   <Body>
 EOF
-    if [ -t 1 ]; then # pass the body through
-        cat
-    else # trivial body can be passed as an argument
-        echo "    ${soapMessage}"
-    fi
+    # pass the body through
+    cat
+    #
     cat <<EOF
   </Body>
 </Envelope>
@@ -82,7 +81,6 @@ function SoapRequest() {
         shift 2
     fi
     #TODO: allow headers to come via options?
-    local payload="$1"
     cat <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
@@ -90,11 +88,9 @@ function SoapRequest() {
   <Body>
     <$requestElement xmlns="$ENDPOINT_NAMESPACE">
 EOF
-    if [ -z "$payload" ]; then # pass the payload through
-        cat
-    else # trivial payload can be passed as an argument
-        echo "      ${payload}"
-    fi
+    # pass the body through
+    cat
+    #
     cat <<EOF
     </$requestElement>
   </Body>
@@ -150,11 +146,14 @@ function SoapClient() {
         return 0
     fi
 
+    [ "$DEBUG" == "true" ] || DEBUG="false"
+
     local command="${1?'Please specify a subcommand; use --help option to list available subcommands'}"
     shift
 
     if [ "$command" == "-" ]; then
         # absorb stdin and pass it to the endpoint
+        $DEBUG && echo "$CURL_POST -d@-" >&2
         $CURL_POST -d@-
     elif grep -q "^function CMD_$command()" "$0"; then
         # execute the recognized subcommand by calling its function
