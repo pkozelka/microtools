@@ -164,6 +164,7 @@ function SoapResponse() {
 
 function SoapClient() {
     local showWsdl="false"
+    LOCAL_DIR="${PWD}"
     while [ "${1:0:2}" == "--" ]; do
         option="$1"
         shift
@@ -176,6 +177,11 @@ function SoapClient() {
             # set url base
             REMOTE_URL="$1"
             shift;;
+        '--dir')
+            # synchronization source directory
+            LOCAL_DIR="$1"
+            shift
+            ;;
         '--user')
             # set authentication, in form user:password
             CURL_AUTH="-u $1"
