@@ -17,30 +17,35 @@ function SoapCall() {
     SOAP_OPERATION="$operationName"
     local soapRequestFunction="SOAP_${operationName}Request"
     local soapResponseFunction="SOAP_${operationName}Response"
+    if ! $soapRequestFunction "$@" >"$TMP/${operationName}.request"; then
+        echo "ERROR: failed to execute '$soapRequestFunction'" >&2
+        return 1
+    fi
     if "$DEBUG"; then
         # just show the request on console
-        $soapRequestFunction "$@"
-    else
-        if ! $soapRequestFunction "$@" >$TMP/${operationName}.request; then
-            echo "ERROR: failed to execute '$soapRequestFunction'" >&2
-            return 1
-        fi
-        local http_code=$($CURL "-d@$TMP/${operationName}.request" --output "$TMP/${operationName}.response" --write-out "%{http_code}")
-        local rv="$?"
-        case "$rv" in
-        0);;
-        *) echo "ERROR: cannot execute curl - exit code is" >&2;return 1;;
-        esac
-
-        SoapClient_processResponse "$TMP/${operationName}.response" "$TMP/${operationName}.payload"
-        case "$http_code" in
-        2??);;
-        *) echo "ERROR: server returned HTTP $http_code" >&2;return 1;;
-        esac
-
-        type -t "$soapResponseFunction" || soapResponseFunction="cat"
-        eval $soapResponseFunction < "$TMP/${operationName}.payload"
+        cat "$TMP/${operationName}.request"
+        return 0
     fi
+
+    # invoke service
+    $CURL "-d@$TMP/${operationName}.request" --output "$TMP/${operationName}.response" --write-out "%{http_code}" >"$TMP/${operationName}.response.code"
+    local rv="$?"
+    case "$rv" in
+    0);;
+    *) echo "ERROR: curl failed - exitcode is $rv" >&2;return 1;;
+    esac
+
+    # process response status and data
+    SoapClient_processResponse "$TMP/${operationName}.response" "$TMP/${operationName}.payload" || return 1
+
+    local http_code=$(cat "$TMP/${operationName}.response.code")
+    case "$http_code" in
+    2??);;
+    *) echo "ERROR: server returned HTTP $http_code" >&2;return 1;;
+    esac
+
+    type -t "$soapResponseFunction" || soapResponseFunction="cat"
+    eval $soapResponseFunction < "$TMP/${operationName}.payload"
     local rv="$?"
     SOAP_OPERATION=""
     return "$rv"
