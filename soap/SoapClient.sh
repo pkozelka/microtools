@@ -32,7 +32,25 @@ function SoapCall() {
         *) echo "ERROR: cannot execute curl - exit code is" >&2;return 1;;
         esac
 
-        xsltproc --output "$TMP/${operationName}.payload" - "$TMP/${operationName}.response" <<"EOF" || return 1
+        SoapClient_processResponse "$TMP/${operationName}.response" "$TMP/${operationName}.payload"
+        case "$http_code" in
+        2??);;
+        *) echo "ERROR: server returned HTTP $http_code" >&2;return 1;;
+        esac
+
+        type -t "$soapResponseFunction" || soapResponseFunction="cat"
+        eval $soapResponseFunction < "$TMP/${operationName}.payload"
+    fi
+    local rv="$?"
+    SOAP_OPERATION=""
+    return "$rv"
+}
+
+function SoapClient_processResponse() {
+    local responseFile="$1"
+    local payloadFile="$2"
+
+    xsltproc --output "$payloadFile" - "$responseFile" <<"EOF" || return 1
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" version="1.0">
     <xsl:output method="xml" indent="yes"/>
@@ -67,17 +85,6 @@ function SoapCall() {
     </xsl:template>
 </xsl:stylesheet>
 EOF
-        case "$http_code" in
-        2??);;
-        *) echo "ERROR: server returned HTTP $http_code" >&2;return 1;;
-        esac
-
-        type -t "$soapResponseFunction" || soapResponseFunction="cat"
-        eval $soapResponseFunction < "$TMP/${operationName}.payload"
-    fi
-    local rv="$?"
-    SOAP_OPERATION=""
-    return "$rv"
 }
 
 function SoapClient_help() {
