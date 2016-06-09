@@ -28,7 +28,8 @@ function findNewerFiles() {
 function verifyRecent() {
     local minutes="${1-'60'}"
     touch "$LOCAL_DIR/.verified"
-    find $LOCAL_DIR/* -ctime "-${minutes}" -type f -printf '%P\n' | while read uri; do
+    echo "Verifying $LOCAL_DIR for changes in last $minutes minutes"
+    find $LOCAL_DIR -ctime "-${minutes}" -type f -printf '%P\n' | while read uri; do
         verifyUri "$uri"
     done
 }
@@ -50,26 +51,34 @@ function watchLoop() {
 #
 function verifyUri() {
     local uri="$1"
+    [ "${uri:0:1}" == '.' ] && return 0
     shift
-
+#    echo "Verifying '$uri'"
     # remote verification is expensive - do not do that twice
     grep -q '^'"$uri"'$' "$LOCAL_DIR/.verified" && return 0
 
     # not yet verified
     local http_code=$($CURL -L --head \
       "$@" "$REMOTE_URL/$uri" \
-      -s --output "$LOCAL_DIR/.head.curl"
+      -s --output "$LOCAL_DIR/.head.curl" \
       --write-out "%{http_code}" \
       2>/dev/null) || return 1
+
+#    echo "$CURL ::: <$uri>: $http_code"
+
+    local filename="$LOCAL_DIR/$uri"
     case "$http_code" in
     4??) # NOT FOUND
-        nexusCurl "A" "$uri" --upload-file "$filename";;
-    2??);; # FOUND
+        nexusCurl "A" "$uri" --upload-file "$filename" || return 1
+        echo "$uri" >>"$LOCAL_DIR/.verified"
+        ;;
+    2??)
+        echo "$uri" >>"$LOCAL_DIR/.verified"
+        ;; # FOUND
     *) # other / problem
         echo "$http_code $uri" >&2
         return 1;;
     esac
-    echo "$uri" >>"$LOCAL_DIR/.verified"
     return 0
 }
 
@@ -77,18 +86,18 @@ function nexusCurl() {
     local actionCode=$1
     local uri=$2
     shift 2
-    local http_code=$($CURL \
-      "$@" "$REMOTE_URL/$uri" \
-      -v --output "$LOCAL_DIR/.curl" \
-      --write-out "%{http_code}" \
-      2>/dev/null) || return 1
+    $CURL "$@" "$REMOTE_URL/$uri" \
+        --output "$LOCAL_DIR/.curl" \
+        --write-out "%{http_code}" > "$LOCAL_DIR/.curl.code" \
+        -v 2>"$LOCAL_DIR/.curl.stderr" || return 1
+    local http_code=$(cat "$LOCAL_DIR/.curl.code")
     case "$http_code" in
     2??)
         log "$actionCode $http_code $uri"
         return 0
         ;;
     *)
-        echo "ERROR: $actionCode $http_code $uri" >&2
+        echo "ERROR: $actionCode $http_code $REMOTE_URL/$uri" >&2
         cat "$LOCAL_DIR/.curl" >&2
         return 1
         ;;
@@ -145,7 +154,7 @@ function checkSingletonLock() {
 
 function doMain() {
     # parse options
-    while [ -n "$1" ]; do
+    while [ "${1:0:2}" == '--' ]; do
         local option="$1"
         shift
         case "$option" in
@@ -181,15 +190,15 @@ function doMain() {
 
     echo "Syncing $LOCAL_DIR to $REMOTE_URL"
     local commands="$*"
-    [ -z "$commands" ] && commands="syncNewer verifyRecent lock watch"
+    [ -z "$commands" ] && commands="findNewer verifyRecent lock watch"
     local command
     for command in $commands; do
-        case "$1" in
+        case "$command" in
         'findNewer')
             findNewerFiles | syncToNexus
             ;;
         'verifyRecent')
-            verifyRecent "60"
+            verifyRecent "120"
             ;;
         'lock') # DO NOT RUN TWICE on the same dir
             checkSingletonLock || return 1
@@ -197,6 +206,7 @@ function doMain() {
         'watch')
             watchLoop | syncToNexus
             ;;
+        *) echo "ERROR: Unknown command: '$command'"
         esac
     done
     return 0
