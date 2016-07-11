@@ -127,10 +127,12 @@ Usage:
     $0 [<options>] <subcommand>
 
 Options:
-    --config
-            reads configuration file
+    --config <file>
+            reads specified configuration file
     --url <url>
-            sets URL base for the endpoint
+            sets URL base for the synchronized endpoint
+    --dir <directory>
+            sets the local directory for synchronization
     --user <name>:<password>
             sets basic authentication for the web service call
     --wsdl  just show wsdl and exit
