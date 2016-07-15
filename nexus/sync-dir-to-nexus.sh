@@ -209,6 +209,8 @@ function doMain() {
         *) echo "ERROR: Unknown command: '$command'"
         esac
     done
+    local pidfile="$LOCAL_DIR/.pid"
+    rm -f "$pidfile"
     return 0
 }
 
