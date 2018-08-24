@@ -27,3 +27,22 @@ Future features may include:
 - automatic rename of co-named unit tests
 - remove useless imports
 - add newly required imports
+
+
+## setjava
+
+`setjava.sh` is a convenient command that switches your current java to the desired one.
+
+It takes the new javahome as its single argument, and does the following:
+
+- sets it to JAVA_HOME
+- prepends it to PATH
+
+In order to make this command effective in an existing bash session, it is necessary to source it.
+For that reason, it is practical to create aliases in your `.bashrc`, for instance like this:
+
+```bash
+alias setjava-6='source $HOME/github.com/microtools/java/setjava.sh $HOME/opt/java-1.6'
+alias setjava-8='source $HOME/github.com/microtools/java/setjava.sh $HOME/opt/java-1.8'
+alias setjava-10='source $HOME/github.com/microtools/java/setjava.sh $HOME/opt/java-10'
+```
