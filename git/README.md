@@ -26,3 +26,14 @@ Generates json view of main commit line
 ```
 ./git-mainline.sh 
 ```
+
+
+## List obsolete local branches (gone)
+
+Lists branches that lost their remote counterparts.
+
+```
+ln -s $HOME/github.com/microtools/git/git-gone.sh $HOME/bin/git-gone
+git gone
+git gone | xargs git brand -d
+```
