@@ -8,5 +8,6 @@ case "$1" in
 '-d'|'--delete') listBranches | xargs git branch --delete;;
 '-D') listBranches | xargs git branch --delete --force;;
 '-p') git fetch --prune && listBranches | xargs git branch --delete;;
+'') listBranches;;
 *) echo "ERROR: Unsupported flag: $1" >&2; exit 1;;
 esac
