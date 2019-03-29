@@ -35,5 +35,5 @@ Lists branches that lost their remote counterparts.
 ```
 ln -s $HOME/github.com/microtools/git/git-gone.sh $HOME/bin/git-gone
 git gone
-git gone | xargs git brand -d
+git gone | xargs git branch -d
 ```
