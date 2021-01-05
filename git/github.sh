@@ -11,9 +11,13 @@ function listStatuses() {
     $CURL_AA/commits/$HASH/statuses
 }
 
+function listStatusCombined() {
+    $CURL_AA/commits/$HASH/status
+}
+
 function deleteStatus() {
     local id=$1
-    $CURL_AA/commits/$HASH/statuses
+    $CURL_AA/commits/$HASH/statuses/$id -X delete
 }
 
 function setStatus() {
@@ -96,8 +100,10 @@ shift
 
 case "$cmd" in
 r) showInfo;;
-st) listStatuses "$@";;
+stls) listStatuses "$@";;
+stlsc) listStatusCombined "$@";;
 std) deleteStatus "$@";;
 sts) setStatus "$@";;
+u) showUser "$@";;
 *) echo "ERROR: Unknown command: $cmd" >&2; exit 1;;
 esac
